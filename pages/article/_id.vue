@@ -31,7 +31,7 @@
                   </v-btn>
                   <div class="caption d-flex flex-row mx-2">
                     {{ article['user']['name'] }}<br/>
-                    {{ article['createTime'] | formateDate }}
+                    {{ article['createTime'] | formatDate }}
                   </div>
                 </v-card-text>
               </v-card>
@@ -53,7 +53,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   filters: {
-    formateDate (val: number) {
+    formatDate (val: number) {
       return new Date(val).toLocaleString()
     },
   },

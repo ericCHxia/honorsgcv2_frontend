@@ -1,3 +1,7 @@
+import type MarkdownIt from "markdown-it/lib"
+import Vue from 'vue'
+import {PrismClass} from "~/plugins/prism";
+
 export type Sort = {
   empty: boolean
   sorted: boolean
@@ -14,7 +18,7 @@ export type Pageable = {
 }
 
 export type Page<T> = {
-  content: Array<T>
+  content: T[]
   total: number
   totalPage: number
   empty: boolean
@@ -39,24 +43,6 @@ export type UserSimple = {
   name: string
 }
 
-export type Community = {
-  id: number | null
-  title: string | null
-  detail: string | null
-  describe: string | null
-  createDate: string | null
-  user: UserSimple | null
-  type: CommunityType | null
-  img: ImageData | null
-  limit: number | null
-  state: number | null
-  enrolling: boolean | null
-  needMentor: boolean | null
-  registrationType: number | null
-  participants: number | CommunityParticipant[]
-  mentors?: CommunityParticipant[]
-}
-
 export type GlobalResponse<T> = {
   success: boolean
   code: number
@@ -75,6 +61,24 @@ export type CommunityParticipant = {
   qq: string
   type: number
   valid: boolean
+}
+
+export type Community = {
+  id: number | null
+  title: string | null
+  detail: string | null
+  describe: string | null
+  createDate: string | null
+  user: UserSimple | null
+  type: CommunityType | null
+  img: ImageData | null
+  limit: number | null
+  state: number | null
+  enrolling: boolean | null
+  needMentor: boolean | null
+  registrationType: number | null
+  participants: number | CommunityParticipant[]
+  mentors?: CommunityParticipant[]
 }
 
 export type ImageSingle = {
@@ -117,9 +121,6 @@ export class User {
   username: string
 }
 
-import type {PrismClass} from './prism'
-import type MarkdownIt from "markdown-it/lib"
-
 declare module 'vue/types/vue' {
   interface Vue {
     $prism: PrismClass,
@@ -137,6 +138,5 @@ declare module '@nuxt/types' {
 }
 
 declare module '*.vue' {
-  import Vue from 'vue'
   export default Vue
 }

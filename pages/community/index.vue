@@ -31,7 +31,7 @@
           <v-row
             v-infinite-scroll="loadMore"
             dense
-            :infinite-scroll-disabled="loadding"
+            :infinite-scroll-disabled="loading"
             infinite-scroll-distance="10"
             :infinite-scroll-threshold="500"
           >
@@ -55,12 +55,8 @@
                       <div class="text-overline mb-4">
                         {{ community.type.name }}
                       </div>
-                      <!-- <v-list-item-title class="text-h5 mb-1">
-                        {{ community.title|titleFilter }}
-                      </v-list-item-title> -->
-                      <v-list-item-subtitle>{{
-                          community.describe
-                        }}
+                      <v-list-item-subtitle>
+                        {{ community.describe }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -74,8 +70,7 @@
                         params: { id: community.id },
                       }"
                     >参与
-                    </v-btn
-                    >
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -100,9 +95,18 @@
 import Vue from 'vue'
 import {CommunityType, Page, Community, ImageResponse} from '~/plugins'
 
+declare type Data = {
+  selectType: number,
+  page: number,
+  totalPages: number,
+  communities: Community[],
+  loading: boolean,
+  bottom: boolean,
+};
+
 export default Vue.extend({
   filters: {
-    titleFilter (value: string) {
+    titleFilter(value: string) {
       if (value.length > 12) {
         return value.substr(0, 12) + '...'
       } else {
@@ -118,35 +122,35 @@ export default Vue.extend({
       name: '全部',
     })
 
-    const commmunitiesResponse = await $axios.get('/api/community', {
+    const communitiesResponse = await $axios.get('/api/community', {
       params: {
         page: 0,
         type: -1,
       },
     })
-    const communities: Page<Community> = commmunitiesResponse.data.data
+    const communities: Page<Community> = communitiesResponse.data.data
     return {
       types,
       communities: communities.content,
       totalPages: communities.totalPages,
     }
   },
-  data() {
+  data(): Data {
     return {
       selectType: -1,
       page: 0,
       totalPages: 0,
       communities: [],
-      loadding: false,
+      loading: false,
       bottom: false,
     }
   },
   methods: {
-    loadMore () {
-      this.loadding = true
+    loadMore() {
+      this.loading = true
       if (this.page + 1 >= this.totalPages) {
         this.bottom = true
-        this.loadding = false
+        this.loading = false
         return
       }
       setTimeout(async () => {
@@ -162,7 +166,7 @@ export default Vue.extend({
           this.bottom = true
         }
         this.communities = this.communities.concat(page.content)
-        this.loadding = false
+        this.loading = false
       }, 1000)
     },
     getSrcSet(imgData: ImageResponse) {

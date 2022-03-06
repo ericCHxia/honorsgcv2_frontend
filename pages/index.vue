@@ -20,7 +20,7 @@
               <v-card-actions class="justify-space-between mx-2">
                 <div class="caption">
                   {{ article['user']['name'] }}<br/>
-                  {{ article['createTime'] | formateDate }}
+                  {{ article['createTime'] | formatDate }}
                 </div>
                 <v-btn color="primary" @click="click_post(article['id'])">
                   查看
@@ -63,7 +63,7 @@
               <v-card-actions class="justify-space-between mx-2">
                 <div class="caption">
                   {{ article['user']['name'] }}<br/>
-                  {{ article['createTime'] | formateDate }}
+                  {{ article['createTime'] | formatDate }}
                 </div>
                 <v-btn color="primary" @click="click_post(article['id'])">
                   查看
@@ -142,7 +142,7 @@
               <v-card-actions class="justify-space-between mx-2">
                 <div class="caption">
                   创建人：{{ article['user']['name'] }}<br/>
-                  {{ article['createDate'] | formateDate }}
+                  {{ article['createDate'] | formatDate }}
                 </div>
                 <v-btn color="primary" @click="click_community(article['id'])">
                   查看
@@ -174,7 +174,7 @@ export default Vue.extend({
       if (value.length < 10) return value
       return value.substr(0, 10) + '...'
     },
-    formateDate(value: number) {
+    formatDate(value: number) {
       if (!value) return ''
       return new Date(value).toLocaleString()
     },

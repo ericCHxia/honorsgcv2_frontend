@@ -61,7 +61,7 @@
       >
         <v-card-title>管理</v-card-title>
         <v-card-actions>
-          <v-btn @click.stop="managerPaticipantDialog = true">人员</v-btn>
+          <v-btn @click.stop="managerParticipantDialog = true">人员</v-btn>
           <v-btn @click.stop="editCommunity">编辑</v-btn>
           <v-btn @click.stop="deleteCommunity">删除</v-btn>
         </v-card-actions>
@@ -84,27 +84,24 @@
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>用户名</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.name
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.name }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>学号</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.userID
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.userID }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>QQ</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.qq ? selectedUser.qq : '不存在'
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.qq ? selectedUser.qq : '不存在' }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -115,27 +112,24 @@
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>学院</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.college
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.college }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>专业</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.major
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.major }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>班级</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                          selectedUser.classID
-                        }}
+                      <v-list-item-subtitle>
+                        {{ selectedUser.classID }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -144,7 +138,7 @@
             </v-row>
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn color="primary" @click="paticipantDialog = true">
+            <v-btn color="primary" @click="participantDialog = true">
               删除人员
             </v-btn>
             <v-btn text color="primary" @click="dialog = false">关闭</v-btn>
@@ -154,7 +148,7 @@
 
       <!-- 删除确认 -->
       <v-dialog
-        v-model="paticipantDialog"
+        v-model="participantDialog"
         transition="dialog-top-transition"
         max-width="600"
       >
@@ -166,7 +160,7 @@
             <em class="warning--text">{{ selectedUser.name }}</em> 吗？
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text color="primary" @click="paticipantDialog = false"
+            <v-btn text color="primary" @click="participantDialog = false"
             >关闭
             </v-btn
             >
@@ -176,10 +170,10 @@
       </v-dialog>
 
       <!-- 共同体人员管理 -->
-      <v-dialog v-model="managerPaticipantDialog" max-width="800">
+      <v-dialog v-model="managerParticipantDialog" max-width="800">
         <v-data-table
-          v-model="seletedUserId"
-          :headers="managerPaticipantHeaders"
+          v-model="selectedUserId"
+          :headers="managerParticipantHeaders"
           :items="participants"
           :search="participantSearch"
           :items-per-page="5"
@@ -221,7 +215,7 @@
                 icon
                 color="red"
                 class="ml-2"
-                @click="managerPaticipantDialog = false"
+                @click="managerParticipantDialog = false"
               >
                 <v-icon>mdi-close</v-icon>
               </v-btn>
@@ -236,7 +230,7 @@
           </template>
 
           <template #[`item.type`]="{ item }">
-            <v-chip v-if="item.type == 1" color="orange" dark> 指导者</v-chip>
+            <v-chip v-if="item.type === 1" color="orange" dark> 指导者</v-chip>
             <v-chip v-else color="green" dark> 参与者</v-chip>
           </template>
 
@@ -304,7 +298,7 @@
               </v-col>
               <v-col cols="8">
                 <v-select
-                  v-model="recordSeletedUserId"
+                  v-model="recordSelectedUserId"
                   :items="validParticipants"
                   item-text="name"
                   item-value="id"
@@ -339,7 +333,7 @@
                       <v-list-item-action>
                         <v-icon
                           :color="
-                            recordSeletedUserId.length > 0 ? 'indigo' : ''
+                            recordSelectedUserId.length > 0 ? 'indigo' : ''
                           "
                         >
                           {{ icon }}
@@ -381,23 +375,29 @@ import {Community, CommunityParticipant, ImageResponse, User} from '~/plugins'
 
 interface Data {
   dialog: boolean
-  paticipantDialog: boolean
-  seletedUserId: number[]
-  recordSeletedUserId: number[]
+  participantDialog: boolean
+  selectedUserId: number[]
+  recordSelectedUserId: number[]
   validParticipants: CommunityParticipant[]
-  managerPaticipantDialog: boolean
+  managerParticipantDialog: boolean
   recordDialog: boolean
   selectedUser: CommunityParticipant
-  managerPaticipantHeaders: any
+  managerParticipantHeaders: any
   participants?: CommunityParticipant[]
   participantSearch: string
   recordContent: string
   recordImage: File | null
   imageBase64: string
+  community?: Community
 }
 
 export default Vue.extend({
-  async asyncData({$axios, params, $auth, error}) {
+  async asyncData({
+                    $axios,
+                    params,
+                    $auth,
+                    error
+                  }){
     try {
       const {data} = await $axios.get('/api/community/' + params.id)
       const community: Community = data.data
@@ -425,8 +425,8 @@ export default Vue.extend({
   data(): Data {
     return {
       dialog: false,
-      paticipantDialog: false,
-      managerPaticipantDialog: false,
+      participantDialog: false,
+      managerParticipantDialog: false,
       recordDialog: false,
       selectedUser: {
         id: 0,
@@ -440,7 +440,7 @@ export default Vue.extend({
         type: 0,
         valid: false,
       },
-      managerPaticipantHeaders: [
+      managerParticipantHeaders: [
         {
           text: '姓名',
           align: 'left',
@@ -474,9 +474,9 @@ export default Vue.extend({
           value: 'actions',
         },
       ],
-      seletedUserId: [],
+      selectedUserId: [],
       participantSearch: '',
-      recordSeletedUserId: [],
+      recordSelectedUserId: [],
       validParticipants: [],
       recordContent: '',
       recordImage: null,
@@ -485,10 +485,10 @@ export default Vue.extend({
   },
   computed: {
     selectSome(): boolean {
-      return this.recordSeletedUserId.length > 0 && !this.selectAll
+      return this.recordSelectedUserId.length > 0 && !this.selectAll
     },
     selectAll(): boolean {
-      return this.recordSeletedUserId.length === this.validParticipants.length
+      return this.recordSelectedUserId.length === this.validParticipants.length
     },
     icon(): string {
       if (this.selectAll) return 'mdi-close-box'
@@ -504,15 +504,15 @@ export default Vue.extend({
     this.$prism.highlightAll()
   },
   methods: {
-    userInfo (participant: CommunityParticipant) {
+    userInfo(participant: CommunityParticipant) {
       this.selectedUser = participant
       this.dialog = true
     },
-    editCommunity () {
+    editCommunity() {
     },
-    deleteCommunity () {
+    deleteCommunity() {
     },
-    managerParticipant () {
+    managerParticipant() {
     },
     getSrcSet(imgData: ImageResponse) {
       let srcSet = ''
@@ -522,19 +522,18 @@ export default Vue.extend({
       srcSet = srcSet.substr(0, srcSet.length - 2)
       return srcSet
     },
-    uploadImage (file: File) {
+    uploadImage(file: File) {
       if (file) {
         this.recordImage = file
-        this.imagefileToBase64(file).then((data) => {
+        this.imageFileToBase64(file).then((data) => {
           this.imageBase64 = data
         })
       }
     },
-    deleteParticipant (p: CommunityParticipant) {
-      // eslint-disable-next-line no-console
+    deleteParticipant(p: CommunityParticipant) {
       console.log(p)
     },
-    pagetext (
+    pagetext(
       pageStart: number,
       pageStop: number,
     ) {
@@ -543,15 +542,15 @@ export default Vue.extend({
     toggle() {
       this.$nextTick(() => {
         if (this.selectAll) {
-          this.recordSeletedUserId = []
+          this.recordSelectedUserId = []
         } else {
-          this.recordSeletedUserId = this.validParticipants.map(
+          this.recordSelectedUserId = this.validParticipants.map(
             (participant) => participant.id
           )
         }
       })
     },
-    imagefileToBase64(file: File): Promise<string> {
+    imageFileToBase64(file: File): Promise<string> {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)

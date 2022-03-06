@@ -118,7 +118,9 @@
 </template>
 
 <script lang="ts">
+import { PropType } from '@vue/composition-api';
 import Vue from 'vue'
+import {User} from "~/plugins";
 
 export default Vue.extend({
   name: 'Avatar',
@@ -128,7 +130,7 @@ export default Vue.extend({
   },
   props: {
     user: {
-      type: Object,
+      type: Object as PropType<User>,
       required: true,
     },
   },

@@ -28,7 +28,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      mdtext: '# 123',
     }
   },
   mounted() {
