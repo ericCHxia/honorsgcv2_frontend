@@ -1,77 +1,219 @@
 <template>
   <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
+    <v-col cols="12" sm="12" md="12">
+      <!-- 文章开始 -->
+      <v-sheet class="mx-auto mb-4" elevation="8">
+        <v-card-title class="ml-4 text-h5 pb-0">文章</v-card-title>
+        <v-slide-group show-arrows class="px-4">
+          <v-slide-item
+            v-for="article in articles['content']"
+            :key="article['id']"
           >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
+            <v-card class="ma-4" width="250px">
+              <v-card-title class="subtitle-1">
+                <span class="text-truncate">{{ article['title'] }}</span>
+              </v-card-title>
+              <v-card-text style="height: 80px">
+                {{ article['describe'] }}
+              </v-card-text>
+              <v-divider class="mx-4"></v-divider>
+              <v-card-actions class="justify-space-between mx-2">
+                <div class="caption">
+                  {{ article['user']['name'] }}<br/>
+                  {{ article['createTime'] | formateDate }}
+                </div>
+                <v-btn color="primary" @click="click_post(article['id'])">
+                  查看
+                  <v-icon right>mdi-open-in-new</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+        <div>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" class="ma-4" to="/article"> 加载更多</v-btn>
+          <v-btn color="primary" class="ma-4" :to="{
+            path: '/post/edit',
+            query: {
+              type: '0'
+            }
+          }" nuxt> 编写文章
           </v-btn>
-        </v-card-actions>
-      </v-card>
+        </div>
+      </v-sheet>
+      <!-- 文章结束 -->
+
+      <!-- 通知开始 -->
+      <v-sheet class="mx-auto mb-4" elevation="8">
+        <v-card-title class="ml-4 text-h5 pb-0">通知</v-card-title>
+        <v-slide-group show-arrows class="px-4 pb-4">
+          <v-slide-item
+            v-for="article in notes['content']"
+            :key="article['id']"
+          >
+            <v-card class="ma-4" width="250px">
+              <v-card-title class="subtitle-1">
+                <span class="text-truncate">{{ article['title'] }}</span>
+              </v-card-title>
+              <v-card-text style="height: 80px">
+                {{ article['describe'] }}
+              </v-card-text>
+              <v-divider class="mx-4"></v-divider>
+              <v-card-actions class="justify-space-between mx-2">
+                <div class="caption">
+                  {{ article['user']['name'] }}<br/>
+                  {{ article['createTime'] | formateDate }}
+                </div>
+                <v-btn color="primary" @click="click_post(article['id'])">
+                  查看
+                  <v-icon right>mdi-open-in-new</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+        <div>
+          <v-btn color="primary" class="ma-4" to="/notice"> 加载更多</v-btn>
+          <v-btn color="primary" class="ma-4" :to="{
+            path: '/post/edit',
+            query: {
+              type: '1'
+            }
+          }" nuxt> 创建通知
+          </v-btn>
+        </div>
+      </v-sheet>
+      <!-- 通知结束 -->
+
+      <!-- 共同体开始 -->
+      <v-sheet class="mx-auto mb-4" elevation="8">
+        <v-card-title class="ml-4 text-h5 pb-0">共同体</v-card-title>
+        <v-slide-group show-arrows class="px-4 pb-4">
+          <v-slide-item
+            v-for="article in communities['content']"
+            :key="article['id']"
+          >
+            <v-card class="ma-4" width="350px">
+              <v-img
+                :lazy-src="article['img'].base64"
+                :src="article['img'].original.url"
+                class="mx-auto"
+                height="150"
+                :srcset="getSrcSet(article['img'])"
+                contain
+                sizes="(min-width: 1280px) 1280px"
+              >
+                <template #placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      color="grey lighten-5"
+                    ></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
+              <v-list-item style="height: 100px">
+                <v-list-item-content>
+                  <v-list-item-title class="text-h5 mb-0">
+                    {{ article['title'] }}
+                  </v-list-item-title>
+                  <div class="text-overline mb-1 d-flex justify-space-between">
+                    <div>{{ article['type']['name'] }}</div>
+                    <div>
+                      {{
+                        article.participants +
+                        '/' +
+                        (article.limit ? article.limit : '无限制')
+                      }}
+                    </div>
+                  </div>
+                  <v-list-item-subtitle>{{
+                      article['describe']
+                    }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="mx-4"></v-divider>
+              <v-card-actions class="justify-space-between mx-2">
+                <div class="caption">
+                  创建人：{{ article['user']['name'] }}<br/>
+                  {{ article['createDate'] | formateDate }}
+                </div>
+                <v-btn color="primary" @click="click_community(article['id'])">
+                  查看
+                  <v-icon right>mdi-open-in-new</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+        <div>
+          <v-btn color="primary" class="ma-4" to="/notice"> 加载更多</v-btn>
+          <v-btn color="primary" class="ma-4" to="/community/edit"> 创建共同体</v-btn>
+        </div>
+      </v-sheet>
+      <!-- 共同体结束 -->
     </v-col>
   </v-row>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+import {ImageResponse} from '~/plugins'
+
+export default Vue.extend({
+  name: 'Index',
+  filters: {
+    title(value: string) {
+      if (!value) return ''
+      if (value.length < 10) return value
+      return value.substr(0, 10) + '...'
+    },
+    formateDate(value: number) {
+      if (!value) return ''
+      return new Date(value).toLocaleString()
+    },
+  },
+  async asyncData({$axios}) {
+    const res = await $axios.get('/api/user')
+    const articles = await $axios.get('/api/article', {
+      params: {
+        type: 0,
+      },
+    })
+    const notes = await $axios.get('/api/article', {
+      params: {
+        type: 1,
+      },
+    })
+    const communities = await $axios.get('/api/community')
+    return {
+      user: res.data.data,
+      articles: articles.data.data,
+      notes: notes.data.data,
+      communities: communities.data.data,
+    }
+  },
+  methods: {
+    click_post(id: number) {
+      this.$router.push(`/post/${id}`)
+    },
+    click_community(id: number) {
+      this.$router.push(`/community/${id}`)
+    },
+    getSrcSet(imgData: ImageResponse) {
+      let srcSet = ''
+      for (const img of imgData.srcset) {
+        srcSet += `${img.url} ${img.width}w,\n`
+      }
+      srcSet = srcSet.substr(0, srcSet.length - 2)
+      return srcSet
+    },
+  },
+})
+</script>
