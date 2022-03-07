@@ -2,29 +2,26 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="12" md="12">
       <!-- 搜索框 -->
-      <v-container>
-        <v-row>
-          <v-col cols="7" md="9"
-          >
-            <v-text-field
-              solo
-              label="搜索"
-              prepend-inner-icon="mdi-magnify"
-            ></v-text-field
-            >
-          </v-col>
-          <v-col cols="5" md="3">
-            <v-select
-              v-model="selectType"
-              :items="types"
-              item-text="name"
-              item-value="id"
-              label="类型"
-              solo
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-row class="mb-0">
+        <v-col>
+          <v-text-field v-model="searchText" solo label="搜索" prepend-inner-icon="mdi-magnify" hide-details></v-text-field>
+        </v-col>
+        <v-col cols="2">
+          <v-select
+            v-model="selectType"
+            :items="types"
+            item-text="name"
+            item-value="id"
+            label="类型"
+            solo
+            hide-details
+          ></v-select>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn large nuxt :to="search">搜索
+          </v-btn>
+        </v-col>
+      </v-row>
 
       <v-sheet class="mx-auto mb-4">
         <v-container>
@@ -93,12 +90,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import {Location} from "vue-router/types/router";
 import {CommunityType, Page, Community, ImageResponse} from '~/plugins'
 
 declare type Data = {
   selectType: number,
   page: number,
   totalPages: number,
+  searchText: string,
   communities: Community[],
   loading: boolean,
   bottom: boolean,
@@ -114,22 +113,25 @@ export default Vue.extend({
       }
     },
   },
-  async asyncData({$axios}) {
+  async asyncData({$axios, query}) {
     const typeResponse = await $axios.get('/api/community/type')
     const types: Array<CommunityType> = typeResponse.data.data
     types.unshift({
       id: -1,
       name: '全部',
     })
-
+    const selectType = query.type ? Number(query.type) : -1
     const communitiesResponse = await $axios.get('/api/community', {
       params: {
         page: 0,
-        type: -1,
+        type: selectType,
+        search: query.q
       },
     })
     const communities: Page<Community> = communitiesResponse.data.data
     return {
+      searchText: query.q,
+      selectType,
       types,
       communities: communities.content,
       totalPages: communities.totalPages,
@@ -143,6 +145,23 @@ export default Vue.extend({
       communities: [],
       loading: false,
       bottom: false,
+      searchText: ''
+    }
+  },
+  computed:{
+    search():Location{
+      return {
+        path:'/community',
+        query:{
+          q:this.searchText,
+          type:String(this.selectType)
+        }
+      }
+    }
+  },
+  watch: {
+    $route() {
+      this.$router.go(0)
     }
   },
   methods: {
