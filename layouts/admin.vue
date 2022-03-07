@@ -25,7 +25,7 @@
               <v-icon>mdi-file-document-multiple-outline</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item  to="/admin/article/tag" nuxt>
+          <v-list-item to="/admin/article/tag" nuxt>
             <v-list-item-content>
               <v-list-item-title>标签管理</v-list-item-title>
             </v-list-item-content>
@@ -33,7 +33,7 @@
               <v-icon>mdi-tag-text</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item nuxt>
+          <v-list-item to="/admin/article/comment" nuxt>
             <v-list-item-content>
               <v-list-item-title>评论管理</v-list-item-title>
             </v-list-item-content>
@@ -62,7 +62,7 @@
               <v-icon>mdi-tag</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item>
+          <v-list-item to="/admin/community/record">
             <v-list-item-content>
               <v-list-item-title>打卡记录</v-list-item-title>
             </v-list-item-content>
