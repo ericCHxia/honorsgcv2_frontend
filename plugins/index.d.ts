@@ -140,6 +140,25 @@ export interface ArticleTag{
   count?:number
 }
 
+export interface ArticleComment{
+  id:number
+  user:User
+  article:ArticleSimple
+  detail:string
+  createTime:number
+}
+
+export interface CommunityRecord{
+  id:number
+  user:UserSimple
+  communityId:number
+  communityTitle:string
+  detail:string
+  image:ImageResponse
+  createTime:number
+  attendant:UserSimple[]
+}
+
 declare module 'vue/types/vue' {
   interface Vue {
     $prism: PrismClass,
