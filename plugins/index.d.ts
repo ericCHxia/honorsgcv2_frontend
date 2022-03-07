@@ -97,12 +97,13 @@ export type ImageResponse = {
 
 export type ArticleRequest = {
   id?: number
-  tag?: string
+  tag?: number
   title?: string
   describe?: string
   detail?: string
   type?: number
   state?: number
+  haveComment?: boolean
 }
 
 export class User {
