@@ -196,6 +196,6 @@ export default Vue.extend({
       srcSet = srcSet.substr(0, srcSet.length - 2)
       return srcSet
     },
-  },
+  }
 })
 </script>
