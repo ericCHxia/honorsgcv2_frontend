@@ -122,10 +122,6 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
       <v-toolbar-title v-text="title"/>
-      <v-spacer/>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -133,17 +129,6 @@
         <Nuxt :key="$route.path"/>
       </v-container>
     </v-main>
-
-    <!-- 用户菜单 -->
-    <v-navigation-drawer v-model="rightDrawer" right temporary fixed>
-      <v-card v-if="islogin" flat>
-        <v-card-title v-text="user['name']"></v-card-title>
-        <v-card-subtitle v-text="user['userId']"></v-card-subtitle>
-        <v-card-actions>
-          <v-btn @click.stop="logout">退出</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-navigation-drawer>
 
     <!--  页脚 -->
     <v-footer app>
