@@ -29,7 +29,7 @@ export default {
       rel: 'icon',
       type: 'image/x-icon',
       href: '/favicon.ico'
-    },]
+    }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -70,7 +70,8 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    proxy: true
+    proxy: true,
+    prefetchPayloads: false
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

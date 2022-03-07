@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <Avatar :user="user"/>
 
@@ -20,7 +19,7 @@
             <v-list-item-title v-text="item.title"/>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="user['privilege'] > 0" router exact to="/admin">
+        <v-list-item v-if="user.privilege > 0" router exact to="/admin">
           <v-list-item-action>
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
@@ -40,7 +39,7 @@
         <Nuxt :key="$route.path"/>
       </v-container>
     </v-main>
-    <honor-footer/>
+    <HonorFooter/>
   </v-app>
 </template>
 

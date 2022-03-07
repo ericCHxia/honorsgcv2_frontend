@@ -17,7 +17,7 @@ export type Pageable = {
   sort: Sort
 }
 
-export type Page<T> = {
+export interface Page<T>{
   content: T[]
   total: number
   totalPage: number

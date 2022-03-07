@@ -1,4 +1,4 @@
-import Footer from '@/components/Footer.vue'
 import Vue from 'vue'
+import Footer from '@/components/Footer.vue'
 
-Vue.component('honor-footer', Footer)
+Vue.component('HonorFooter', Footer)

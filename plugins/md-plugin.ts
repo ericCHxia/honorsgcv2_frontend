@@ -39,7 +39,7 @@ const mdMiddleware: Middleware = ({$md}) => {
   $md.renderer.rules.image = generateSrcset
 }
 
-//@ts-ignore
+// @ts-ignore
 const markdownIt: MarkdownIt = MavonEditor.mavonEditor.getMarkdownIt()
 markdownIt.renderer.rules.image = generateSrcset
 
