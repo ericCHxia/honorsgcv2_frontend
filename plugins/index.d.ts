@@ -36,6 +36,7 @@ export interface Page<T>{
 export type CommunityType = {
   id: number
   name: string
+  count?: number
 }
 
 export type UserSimple = {
@@ -119,6 +120,24 @@ export class User {
   subject: string
   userId: string
   username: string
+}
+
+export interface ArticleSimple{
+  id: number
+  user: User
+  tagName: string
+  title: string
+  describe: string
+  state: number
+  createTime: number
+  type: number
+  haveComment: boolean
+}
+
+export interface ArticleTag{
+  id:number
+  name:string
+  count?:number
 }
 
 declare module 'vue/types/vue' {
