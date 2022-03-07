@@ -5,7 +5,7 @@
 
       <v-divider></v-divider>
       <v-list>
-        <v-list-item to="/admin">
+        <v-list-item to="/admin" exact>
           <v-list-item-action>
             <v-icon>mdi-apps</v-icon>
           </v-list-item-action>
@@ -17,7 +17,7 @@
           <template #activator>
             <v-list-item-title>文章管理</v-list-item-title>
           </template>
-          <v-list-item>
+          <v-list-item to="/admin/article" nuxt exact>
             <v-list-item-content>
               <v-list-item-title>文章列表</v-list-item-title>
             </v-list-item-content>
@@ -25,7 +25,7 @@
               <v-icon>mdi-file-document-multiple-outline</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item>
+          <v-list-item  to="/admin/article/tag" nuxt>
             <v-list-item-content>
               <v-list-item-title>标签管理</v-list-item-title>
             </v-list-item-content>
@@ -33,12 +33,20 @@
               <v-icon>mdi-tag-text</v-icon>
             </v-list-item-icon>
           </v-list-item>
+          <v-list-item nuxt>
+            <v-list-item-content>
+              <v-list-item-title>评论管理</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon>mdi-comment-multiple</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
         </v-list-group>
         <v-list-group prepend-icon="mdi-google-classroom" no-action>
           <template #activator>
             <v-list-item-title>共同体管理</v-list-item-title>
           </template>
-          <v-list-item>
+          <v-list-item to="/admin/community" exact>
             <v-list-item-content>
               <v-list-item-title>共同体列表</v-list-item-title>
             </v-list-item-content>
@@ -46,7 +54,7 @@
               <v-icon>mdi-view-list</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item>
+          <v-list-item to="/admin/community/type">
             <v-list-item-content>
               <v-list-item-title>共同体类型</v-list-item-title>
             </v-list-item-content>
