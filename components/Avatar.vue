@@ -120,7 +120,7 @@
 <script lang="ts">
 import { PropType } from '@vue/composition-api';
 import Vue from 'vue'
-import {User} from "~/plugins";
+import {User} from "~/src";
 
 export default Vue.extend({
   name: 'Avatar',

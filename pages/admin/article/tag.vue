@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ArticleTag} from "~/plugins";
+import {ArticleTag} from "~/src";
 
 export default Vue.extend({
   name: "Tag",

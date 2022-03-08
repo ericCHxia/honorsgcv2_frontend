@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import {Component, Emit, Vue, Model} from 'vue-property-decorator'
-import {ImageResponse} from '~/plugins';
+import {ImageResponse} from '~/src';
 
 @Component
 export default class HonorEditor extends Vue {

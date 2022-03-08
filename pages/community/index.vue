@@ -91,7 +91,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Location} from "vue-router/types/router";
-import {CommunityType, Page, Community, ImageResponse} from '~/plugins'
+import {CommunityType, Page, Community, ImageResponse} from '~/src'
 
 declare type Data = {
   selectType: number,

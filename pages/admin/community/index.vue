@@ -47,7 +47,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {DataTableHeader} from "vuetify";
-import {Community, Page} from "~/plugins";
+import {Community, Page} from "~/src";
 
 interface Data {
   communities: Page<Community> | null

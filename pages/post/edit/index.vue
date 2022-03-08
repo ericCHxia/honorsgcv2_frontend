@@ -52,7 +52,7 @@
 import {Component, Vue} from 'vue-property-decorator'
 
 import HonorEditor from '~/components/Editor.vue'
-import {ArticleRequest, ArticleTag} from '~/plugins'
+import {ArticleRequest, ArticleTag} from '~/src'
 
 @Component({
   components: {

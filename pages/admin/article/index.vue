@@ -41,7 +41,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {DataTableHeader} from 'vuetify';
-import {ArticleSimple, Page} from "~/plugins";
+import {ArticleSimple, Page} from "~/src";
 
 interface Data {
   articles: Page<ArticleSimple> | null

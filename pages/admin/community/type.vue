@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {CommunityType} from "~/plugins";
+import {CommunityType} from "~/src";
 
 export default Vue.extend({
   name: "CommunityType",

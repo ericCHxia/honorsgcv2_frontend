@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {CommunityRecord, Page} from "~/plugins";
+import {CommunityRecord, Page} from "~/src";
 
 export default Vue.extend({
   name: "Record",

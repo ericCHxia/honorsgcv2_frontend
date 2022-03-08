@@ -164,7 +164,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ImageResponse} from '~/plugins'
+import {ImageResponse} from '~/src'
 
 export default Vue.extend({
   name: 'Index',

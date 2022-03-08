@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import {ArticleComment} from "~/plugins";
+import {ArticleComment} from "~/src";
 
 export default Vue.extend({
   name: "Comment",

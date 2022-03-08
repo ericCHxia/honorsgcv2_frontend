@@ -371,7 +371,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {Community, CommunityParticipant, ImageResponse, User} from '~/plugins'
+import {Community, CommunityParticipant, ImageResponse, User} from '~/src'
 
 interface Data {
   dialog: boolean
