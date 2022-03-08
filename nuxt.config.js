@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'server',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -39,7 +39,6 @@ export default {
   plugins: [
     {src: '~/plugins/prism', ssr: true},
     '@/plugins/axios',
-    {src: '~/plugins/mavon-editor', ssr: false},
     {src: '~/plugins/vue-infinite-scroll', ssr: false},
     '~/plugins/md-plugin',
     '~/plugins/components',
