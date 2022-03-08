@@ -95,17 +95,6 @@ export type ImageResponse = {
   base64: string
 }
 
-export type ArticleRequest = {
-  id?: number
-  tag?: number
-  title?: string
-  describe?: string
-  detail?: string
-  type?: number
-  state?: number
-  haveComment?: boolean
-}
-
 export class User {
   accountNonExpired: boolean
   accountNonLocked: boolean
@@ -121,32 +110,6 @@ export class User {
   subject: string
   userId: string
   username: string
-}
-
-export interface ArticleSimple{
-  id: number
-  user: User
-  tagName: string
-  title: string
-  describe: string
-  state: number
-  createTime: number
-  type: number
-  haveComment: boolean
-}
-
-export interface ArticleTag{
-  id:number
-  name:string
-  count?:number
-}
-
-export interface ArticleComment{
-  id:number
-  user:User
-  article:ArticleSimple
-  detail:string
-  createTime:number
 }
 
 export interface CommunityRecord{
