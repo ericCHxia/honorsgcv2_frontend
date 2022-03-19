@@ -387,7 +387,7 @@
             <v-row>
               <v-col cols="4">
                 <v-hover v-slot="{ hover }">
-                  <v-card class="my-4 rounded-lg" :elevation="hover ? 12 : 2">
+                  <v-card class="my-4 rounded-lg" :elevation="hover ? 12 : 2" @click="beginUpload">
                     <v-img
                       aspect-ratio="1"
                       class="align-center"
@@ -397,16 +397,6 @@
                     </v-img>
                   </v-card>
                 </v-hover>
-                <v-file-input
-                  v-show="true"
-                  id="image_input"
-                  accept="image/jpeg, image/png, image/gif, image/bmp, image/webp"
-                  hide-input
-                  hide-details
-                  prepend-icon="mdi-camera"
-                  @change="uploadImage"
-                >
-                </v-file-input>
               </v-col>
               <v-col cols="8">
                 <v-select
@@ -704,8 +694,15 @@ export default Vue.extend({
       })
     },
     beginUpload() {
-      // @ts-ignore
-      document.getElementById('image_input').click()
+      const fileInput = document.createElement('input')
+      fileInput.type = 'file'
+      fileInput.style.display = 'none'
+      fileInput.onchange = (event: any) => {
+        this.uploadImage(event.target.files[0])
+        document.body.removeChild(fileInput)
+      }
+      document.body.appendChild(fileInput)
+      fileInput.click()
     },
     selectImage(image: ImageResponse) {
       this.selectedImage = image
