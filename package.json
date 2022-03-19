@@ -12,7 +12,8 @@
     "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
     "prepare": "husky install",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest",
+    "commit": "git-cz"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
@@ -51,6 +52,7 @@
     "@babel/eslint-parser": "^7.14.7",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/cz-commitlint": "^16.2.3",
     "@nuxt/types": "^2.15.7",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
@@ -61,6 +63,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.0.5",
     "babel-plugin-prismjs": "^2.1.0",
+    "commitizen": "^4.2.4",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
@@ -75,5 +78,10 @@
     "ts-jest": "^27.0.3",
     "vite-plugin-prismjs": "^0.0.8",
     "vue-jest": "^3.0.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
