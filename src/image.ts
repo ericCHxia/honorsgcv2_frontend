@@ -1,5 +1,5 @@
-import {ImageResponse} from "~/src/index";
 import {NuxtAxiosInstance} from "@nuxtjs/axios";
+import {ImageResponse} from "~/src/index";
 
 export function getSrcSet(imgData: ImageResponse) {
   let srcSet = ''
