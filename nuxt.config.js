@@ -6,30 +6,31 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - 卓越学院学习共同体平台',
-    title: '卓越学院学习共同体平台',
+    titleTemplate: '%s - 卓越学院成长共同体平台',
+    title: '卓越学院成长共同体平台',
     meta: [{
       charset: 'utf-8'
     },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: ''
-      },
-      {
-        name: 'format-detection',
-        content: 'telephone=no'
-      }
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1'
+    },
+    {
+      hid: 'description',
+      name: 'description',
+      content: ''
+    },
+    {
+      name: 'format-detection',
+      content: 'telephone=no'
+    }
     ],
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
-    }]
+      href: '/icon.ico'
+    }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -37,10 +38,12 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    {src: '~/plugins/prism', ssr: true},
+    { src: '~/plugins/prism', ssr: true },
+    { src: '~/plugins/vue-cropper', ssr: false },
     '@/plugins/axios',
-    {src: '~/plugins/vue-infinite-scroll', ssr: false},
+    { src: '~/plugins/vue-infinite-scroll', ssr: false },
     '~/plugins/md-plugin',
+    '~/plugins/user-plugin',
     '~/plugins/components',
   ],
 
@@ -64,19 +67,28 @@ export default {
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     '@nuxtjs/markdownit',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/toast'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     proxy: true,
-    prefetchPayloads: false
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'en'
+      name: '卓越学院成长共同体平台',
+      short_name: '共同体平台',
+      lang: 'zh-cn',
+    },
+    meta: {
+      name: '卓越学院成长共同体平台',
+      author: 'EricXia'
+    },
+    icon: {
+      iconFileName: 'icon.png',
     }
   },
 
@@ -88,7 +100,6 @@ export default {
     langPrefix: 'line-numbers language-',
     use: [
       'markdown-it-mathjax3',
-      // "~/plugins/md-srcset",
     ]
   },
 
@@ -118,7 +129,10 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extractCSS: true,
+    transpile: ['vuetify/lib']
+  },
 
   // Auth module configuration: https://auth.nuxtjs.org/
   auth: {
@@ -133,14 +147,14 @@ export default {
         user: {
           property: 'data',
           global: true,
+          scopeKey: 'authorities',
         },
         endpoints: {
           login: {
             url: '/api/login',
             method: 'post',
           },
-          user: {url: '/api/user', method: 'get', propertyName: 'data'},
-          logout: {url: '/api/logout', method: 'get'},
+          user: { url: '/api/user', method: 'get', propertyName: 'data' },
         }
       }
     },
@@ -153,21 +167,36 @@ export default {
 
   // Router module configuration: https://go.nuxtjs.dev/config-router
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
+    extendRoutes(routes, resolve) {
+      const router = [
+        {
+          path: "/community/edit/:id",
+          name: "CommunityEditorId",
+          component: resolve('pages/community/edit.vue'),
+        }
+      ];
+      routes.push(...router);
+    }
   },
 
   proxy: {
     '/api': {
-      target: 'http://localhost:8080',
+      target: 'https://back.hduhonorsgc.cn',
       pathRewrite: {
         '^/api': ''
       }
     },
     '/upload': {
-      target: 'http://localhost:8080',
+      target: 'https://back.hduhonorsgc.cn',
     },
     '/image': {
-      target: 'http://localhost:8080',
+      target: 'https://back.hduhonorsgc.cn',
     },
+  },
+
+  toast: {
+    position: 'top-center',
+    duration: 2000,
   }
 }

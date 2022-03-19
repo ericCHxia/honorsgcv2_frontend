@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cp -r .nuxt ./dist/serverless
+cd dist\serverless
+yarn install --production
+s deploy

@@ -36,3 +36,16 @@ export interface ArticleComment{
   detail:string
   createTime:number
 }
+
+export interface Article{
+  id: number
+  user: User
+  tag: ArticleTag
+  title: string
+  describe: string
+  state: number
+  createTime: number
+  detail: string
+  type: number
+  haveComment: boolean
+}

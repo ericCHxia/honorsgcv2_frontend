@@ -5,7 +5,7 @@
         <v-row>
           <v-col cols="12" md="8">
             <client-only>
-              <HonorEditor v-model="content.detail"/>
+              <HonorEditor v-model="content.detail" />
             </client-only>
           </v-col>
           <v-col cols="12" md="4" class="justify-space-between">
@@ -15,10 +15,11 @@
               </v-card-title>
 
               <v-card-text>
-                <v-btn class="align-center" block>
-                  <v-icon color="blue" x-large>mdi-cloud-upload</v-icon>
-                  上传封面
-                </v-btn>
+                <v-file-input
+                  hide-input
+                  prepend-icon="mdi-camera"
+                  @change="uploadImage"
+                ></v-file-input>
                 <v-card class="my-4 rounded-lg">
                   <v-img
                     class="grey lighten-2"
@@ -26,7 +27,7 @@
                     aspect-ratio="1"
                     height="250"
                     elevation="5"
-                    src="http://localhost:3000/image/org/b79271ad9b554ddb9465efe83911d144.png"
+                    :src="cover"
                   >
                   </v-img>
                 </v-card>
@@ -43,7 +44,7 @@
                   </template>
                 </v-text-field>
                 <v-select
-                  v-model="content.typeId"
+                  v-model="typeId"
                   label="共同体类型"
                   :items="types"
                   item-value="id"
@@ -62,13 +63,16 @@
                         <v-icon v-on="on"> mdi-help-circle-outline</v-icon>
                       </template>
                       <span>
-                        "自由报名"：参与共同体不需要审批<br/>
+                        "自由报名"：参与共同体不需要审批<br />
                         "审批报名"：参与共同体需要审批
                       </span>
                     </v-tooltip>
                   </template>
                 </v-select>
-                <v-textarea label="描述"></v-textarea>
+                <v-textarea
+                  v-model="content.describe"
+                  label="描述"
+                ></v-textarea>
                 <v-checkbox
                   v-model="content.needMentor"
                   :label="`指导者: ${content.needMentor ? '需要' : '不需要'}`"
@@ -76,7 +80,7 @@
               </v-card-text>
 
               <v-card-actions class="justify-space-between">
-                <v-btn color="primary">保存</v-btn>
+                <v-btn color="primary" @click="submit">保存</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -89,27 +93,50 @@
 <script lang="ts">
 import Vue from 'vue'
 import HonorEditor from '@/components/Editor.vue'
+import { CommunityType, Community } from '~/src'
+
+interface Data {
+  content: Community
+  typeId: number | null
+  types: CommunityType[]
+  registrationTypes: object
+  uploadImageFile: File | null
+  uploadImageBase64: string
+}
 
 export default Vue.extend({
   components: {
     HonorEditor,
   },
-  async asyncData({$axios}) {
-    const {data} = await $axios.get('/api/community/type')
+  async asyncData({ $axios, params }) {
+    const { data } = await $axios.get('/api/community/type')
+    const types: CommunityType[] = data.data
+    if (params.id) {
+      const { data } = await $axios.get(`/api/community/${params.id}`)
+      const content: Community = data.data
+      return {
+        content,
+        types,
+        typeId: content.type?.id,
+      }
+    }
     return {
-      types: data.data,
+      types,
     }
   },
-  data() {
+  data(): Data {
     return {
       content: {
         title: '',
         detail: '',
-        typeId: null,
+        type: null,
         needMentor: true,
         registrationType: 0,
         limit: 0,
+        img: null,
+        describe: null,
       },
+      typeId: null,
       types: [],
       registrationTypes: [
         {
@@ -121,12 +148,110 @@ export default Vue.extend({
           name: '审批报名',
         },
       ],
+      uploadImageFile: null,
+      uploadImageBase64: '',
     }
   },
   head() {
     return {
       title: '编辑共同体',
     }
+  },
+  computed: {
+    cover(): string {
+      if (this.uploadImageBase64) {
+        return this.uploadImageBase64
+      }
+      if (this.content.img&&typeof this.content.img!=="string") {
+        return this.content.img.original.url
+      }
+      return ''
+    },
+  },
+  methods: {
+    file2base64(file: File): Promise<string> {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      return new Promise((resolve, reject) => {
+        reader.onload = () => {
+          resolve(reader.result as string)
+        }
+        reader.onerror = (error) => {
+          reject(error)
+        }
+      })
+    },
+    async uploadImage(file: File) {
+      if (file) {
+        const base64 = await this.file2base64(file)
+        this.uploadImageBase64 = base64
+        this.uploadImageFile = file
+      }
+    },
+    async submit() {
+      if (!this.content.title || !this.content.title.trim()) {
+        this.$toast.error('请填写标题')
+        return
+      }
+      if (!this.content.type) {
+        this.$toast.error('请选择共同体类型')
+        return
+      }
+      if (!this.content.describe || !this.content.describe.trim()) {
+        this.$toast.error('请填写描述')
+        return
+      }
+      if (!this.content.detail || !this.content.detail.trim()) {
+        this.$toast.error('请填写详情')
+        return
+      }
+      if (!this.content.img && !this.uploadImageFile) {
+        this.$toast.error('请上传封面')
+        return
+      }
+      try {
+        if (this.uploadImageFile) {
+          const data = await this.$uploadImg(this.uploadImageFile)
+          this.content.img = data
+          this.uploadImageFile = null
+          this.uploadImageBase64 = ''
+        }
+      } catch (e:any) {
+        if (e.response.message) {
+          this.$toast.error(e.response.message)
+        } else {
+          this.$toast.error('上传图片失败')
+        }
+        return
+      }
+
+      try {
+        const content = Object.assign({}, this.content)
+        if (content.img&&typeof content.img!=="string") {
+          content.img = content.img.name
+        }
+        if (content.id) {
+          await this.$axios.put(
+            `/api/community/${content.id}`,
+            content
+          )
+        } else {
+          await this.$axios.post('/api/community', content)
+        }
+        this.$router.push({
+          name: 'community-id',
+          params: {
+            id: String(this.content.id),
+          },
+        })
+      } catch (e:any) {
+        if (e.response.message) {
+          this.$toast.error(e.response.message)
+        } else {
+          this.$toast.error('提交失败')
+        }
+      }
+    },
   },
 })
 </script>

@@ -108,12 +108,25 @@ export default class extends Vue {
   ]
 
   tags:ArticleTag[] = []
-  save(){
-    this.$axios.post("/api/article",this.content).then(res=>{
-      this.$router.push("/post/"+res.data.data.articleId)
-    }).catch(reason => {
-      console.log(reason)
-    })
+  async save(){
+    let content:any
+    try {
+      if (this.content.id) {
+        const {data} = await this.$axios.put("/api/article/"+this.content.id, this.content)
+        content = data.data
+      } else {
+        const {data} = await this.$axios.post("/api/article", this.content)
+        content = data.data
+      }
+      this.$toast.success("保存成功")
+      this.$router.push({path: `/post/${content.articleId}`})
+    }catch(e:any){
+      if(e.response.data.message){
+        this.$toast.error(e.response.data.message)
+      }else{
+        this.$toast.error("保存失败")
+      }
+    }
   }
 
   couldCommit = false

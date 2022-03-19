@@ -15,7 +15,6 @@ const avaliableWidth = [200, 400, 600, 800, 1024, 1280, 1366, 1440, 1600, 1920, 
 
 function generateSrcset(tokens: Token[], idx: number, options: Options, env: any, self: Renderer) {
   const token = tokens[idx]
-  console.log("generateSrcset", token)
   if (token.attrs) {
     const src = token.attrs[token.attrIndex("src")][1]
     const filenmae = uploadsPattern.exec(src)

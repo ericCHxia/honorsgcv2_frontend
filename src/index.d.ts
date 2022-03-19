@@ -1,6 +1,7 @@
 import type MarkdownIt from "markdown-it/lib"
 import Vue from 'vue'
 import {PrismClass} from "~/plugins/prism";
+import {Honor} from "~/src/image";
 
 export type Sort = {
   empty: boolean
@@ -64,23 +65,6 @@ export type CommunityParticipant = {
   valid: boolean
 }
 
-export type Community = {
-  id: number | null
-  title: string | null
-  detail: string | null
-  describe: string | null
-  createDate: string | null
-  user: UserSimple | null
-  type: CommunityType | null
-  img: ImageData | null
-  limit: number | null
-  state: number | null
-  enrolling: boolean | null
-  needMentor: boolean | null
-  registrationType: number | null
-  participants: number | CommunityParticipant[]
-  mentors?: CommunityParticipant[]
-}
 
 export type ImageSingle = {
   url: string
@@ -88,6 +72,7 @@ export type ImageSingle = {
 }
 
 export type ImageResponse = {
+  name: string
   original: ImageSingle
   width: number
   height: number
@@ -95,21 +80,40 @@ export type ImageResponse = {
   base64: string
 }
 
+export type Community = {
+  id?: number | null
+  title: string | null
+  detail: string | null
+  describe: string | null
+  createDate?: string | null
+  user?: UserSimple | null
+  type: CommunityType | null
+  img: ImageResponse | null | string
+  limit: number | null
+  state?: number | null
+  enrolling?: boolean | null
+  needMentor: boolean | null
+  registrationType: number | null
+  participants?: number | CommunityParticipant[]
+  mentors?: CommunityParticipant[]
+}
+
 export class User {
-  accountNonExpired: boolean
-  accountNonLocked: boolean
-  authorities: string[]
-  classId: string
-  college: string
-  credentialsNonExpired: boolean
-  enabled: boolean
-  id: number
-  name: string
-  privilege: number
-  qq: string
-  subject: string
-  userId: string
-  username: string
+  accountNonExpired?: boolean
+  accountNonLocked?: boolean
+  authorities?: string[]
+  classId?: string
+  college?: string
+  credentialsNonExpired?: boolean
+  enabled?: boolean
+  id?: number
+  name?: string
+  privilege?: number
+  qq?: string
+  subject?: string
+  userId?: string
+  username?: string
+  avatar?:string
 }
 
 export interface CommunityRecord{
@@ -130,7 +134,15 @@ declare module 'vue/types/vue' {
     $md5(str: string, raw?: false): string,
 
     $md: MarkdownIt,
+    getSrcSet(imgData: ImageResponse): string
+    $honor: Honor
+    isAdmin: () => boolean
+    $uploadImg: (file: File) => Promise<ImageResponse>
   }
+}
+
+interface HonorConfig{
+  semester?:number
 }
 
 declare module '@nuxt/types' {

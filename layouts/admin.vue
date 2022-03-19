@@ -100,7 +100,7 @@
             </v-list-item-icon>
           </v-list-item>
         </v-list-group>
-        <v-list-item>
+        <v-list-item to="/admin/config">
           <v-list-item-action>
             <v-icon>mdi-server-network</v-icon>
           </v-list-item-action>
@@ -149,7 +149,7 @@ export default Vue.extend({
       clipped: false,
       drawer: true,
       fixed: false,
-      title: '卓越学院学习共同体平台',
+      title: '卓越学院成长共同体平台',
       user: this.$auth.user,
       islogin: this.$auth.loggedIn,
       rightDrawer: false,
