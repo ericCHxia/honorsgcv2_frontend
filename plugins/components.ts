@@ -1,11 +1,5 @@
 import Vue from 'vue'
-import Footer from '@/components/Footer.vue'
 import {getSrcSet} from '~/src/image'
-import UserBar from '@/components/UserBar.vue'
-
-
-Vue.component('HonorFooter', Footer)
-Vue.component('HonorUserBar', UserBar)
 
 function formatDate(value: number) {
   if (!value) return ''
@@ -14,12 +8,12 @@ function formatDate(value: number) {
 
 function formatStr(text: string, len: number) {
   if (text.length < len) return text
-  else return text.substr(0, len) + '...'
+  else return text.substring(0, len) + '...'
 }
 
 function formatSubject(text: string) {
-  if (text.includes('('))return text.substr(0, text.indexOf('(')).trim()
-  if (text.includes('（'))return text.substr(0, text.indexOf('（')).trim()
+  if (text.includes('('))return text.substring(0, text.indexOf('(')).trim()
+  if (text.includes('（'))return text.substring(0, text.indexOf('（')).trim()
   return text
 }
 
