@@ -29,6 +29,16 @@ export default {
       rel: 'icon',
       type: 'image/x-icon',
       href: '/icon.ico'
+    },
+    {
+      rel: 'stylesheet',
+      type: 'text/css',
+      href: 'https://cdn.staticfile.org/MaterialDesign-Webfont/6.5.95/css/materialdesignicons.min.css'
+    },
+    {
+      rel: 'stylesheet',
+      type: 'text/css',
+      href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'
     }
     ]
   },
@@ -106,6 +116,7 @@ export default {
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    defaultAssets: false,
     theme: {
       dark: false,
       themes: {
