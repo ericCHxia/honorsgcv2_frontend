@@ -15,22 +15,20 @@
               </v-card-title>
 
               <v-card-text>
-                <v-file-input
-                  hide-input
-                  prepend-icon="mdi-camera"
-                  @change="uploadImage"
-                ></v-file-input>
-                <v-card class="my-4 rounded-lg">
-                  <v-img
-                    class="grey lighten-2"
-                    contain
-                    aspect-ratio="1"
-                    height="250"
-                    elevation="5"
-                    :src="cover"
-                  >
-                  </v-img>
-                </v-card>
+                <v-hover v-slot="{ hover }">
+                  <v-card class="my-4 rounded-lg" :elevation="hover ? 10 : 2" @click="beginUpload">
+                    <v-img
+                      class="grey lighten-2"
+                      contain
+                      aspect-ratio="1"
+                      height="250"
+                      elevation="5"
+                      :src="cover"
+                    >
+                    </v-img>
+                  </v-card>
+                </v-hover>
+
                 <v-text-field v-model="content.title" label="标题">
                 </v-text-field>
                 <v-text-field v-model="content.limit" label="人数限制">
@@ -106,7 +104,7 @@ interface Data {
 
 export default Vue.extend({
   components: {
-    HonorEditor,
+    HonorEditor
   },
   async asyncData({ $axios, params }) {
     const { data } = await $axios.get('/api/community/type')
@@ -117,11 +115,11 @@ export default Vue.extend({
       return {
         content,
         types,
-        typeId: content.type?.id,
+        typeId: content.type?.id
       }
     }
     return {
-      types,
+      types
     }
   },
   data(): Data {
@@ -134,27 +132,27 @@ export default Vue.extend({
         registrationType: 0,
         limit: 0,
         img: null,
-        describe: null,
+        describe: null
       },
       typeId: null,
       types: [],
       registrationTypes: [
         {
           id: 0,
-          name: '自由报名',
+          name: '自由报名'
         },
         {
           id: 1,
-          name: '审批报名',
-        },
+          name: '审批报名'
+        }
       ],
       uploadImageFile: null,
-      uploadImageBase64: '',
+      uploadImageBase64: ''
     }
   },
   head() {
     return {
-      title: '编辑共同体',
+      title: '编辑共同体'
     }
   },
   computed: {
@@ -162,11 +160,11 @@ export default Vue.extend({
       if (this.uploadImageBase64) {
         return this.uploadImageBase64
       }
-      if (this.content.img&&typeof this.content.img!=="string") {
+      if (this.content.img && typeof this.content.img !== 'string') {
         return this.content.img.original.url
       }
-      return ''
-    },
+      return '/upload.svg'
+    }
   },
   methods: {
     file2base64(file: File): Promise<string> {
@@ -193,7 +191,7 @@ export default Vue.extend({
         this.$toast.error('请填写标题')
         return
       }
-      if (!this.content.type) {
+      if (this.typeId===null || this.typeId===undefined) {
         this.$toast.error('请选择共同体类型')
         return
       }
@@ -216,7 +214,7 @@ export default Vue.extend({
           this.uploadImageFile = null
           this.uploadImageBase64 = ''
         }
-      } catch (e:any) {
+      } catch (e: any) {
         if (e.response.message) {
           this.$toast.error(e.response.message)
         } else {
@@ -226,25 +224,26 @@ export default Vue.extend({
       }
 
       try {
-        const content = Object.assign({}, this.content)
-        if (content.img&&typeof content.img!=="string") {
+        const content = {
+          ...this.content,
+          typeId: this.typeId
+        }
+        if (content.img && typeof content.img !== 'string') {
           content.img = content.img.name
         }
         if (content.id) {
-          await this.$axios.put(
-            `/api/community/${content.id}`,
-            content
-          )
+          await this.$axios.put(`/api/community/${content.id}`, content)
         } else {
-          await this.$axios.post('/api/community', content)
+          const {data} = await this.$axios.post('/api/community', content)
+          this.content.id = data.data.id
         }
         this.$router.push({
           name: 'community-id',
           params: {
-            id: String(this.content.id),
-          },
+            id: String(this.content.id)
+          }
         })
-      } catch (e:any) {
+      } catch (e: any) {
         if (e.response.message) {
           this.$toast.error(e.response.message)
         } else {
@@ -252,6 +251,17 @@ export default Vue.extend({
         }
       }
     },
-  },
+    beginUpload() {
+      const fileInput = document.createElement('input') as HTMLInputElement
+      fileInput.accept = 'image/jpeg,image/png,image/webp'
+      fileInput.type = 'file'
+      fileInput.onchange = (event: any) => {
+        this.uploadImage(event.target.files[0])
+        document.body.removeChild(fileInput)
+      }
+      document.body.appendChild(fileInput)
+      fileInput.click()
+    }
+  }
 })
 </script>
