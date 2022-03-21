@@ -13,7 +13,7 @@ Vue.use(MavonEditor)
 const uploadsPattern = /^(\/upload\/img|\/image\/org)\/(.*)/
 const avaliableWidth = [200, 400, 600, 800, 1024, 1280, 1366, 1440, 1600, 1920, 2560]
 
-function generateSrcset(tokens: Token[], idx: number, options: Options, env: any, self: Renderer) {
+function generateSrcset(tokens: Token[], idx: number, options: Options, _env: any, self: Renderer) {
   const token = tokens[idx]
   if (token.attrs) {
     const src = token.attrs[token.attrIndex("src")][1]

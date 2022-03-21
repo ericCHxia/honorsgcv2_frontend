@@ -1,6 +1,5 @@
 import type MarkdownIt from "markdown-it/lib"
 import Vue from 'vue'
-import {VueConstructor} from 'vue/types/vue'
 import {PrismClass} from "~/plugins/prism";
 import {Honor} from "~/src/image";
 
