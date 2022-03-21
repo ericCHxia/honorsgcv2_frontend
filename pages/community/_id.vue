@@ -646,8 +646,15 @@ export default Vue.extend({
       this.selectedUser = participant
       this.dialog = true
     },
-    editCommunity() {},
-    deleteCommunity() {},
+    async deleteCommunity() {
+      try {
+        if(this.community)await this.$axios.delete('/api/community/' + this.community.id)
+        this.$router.push('/community')
+      } catch (e:any) {
+        if(e.response.data&&e.response.data.message)this.$toast.error(e.response.data.message)
+        else this.$toast.error('删除失败')
+      }
+    },
     managerParticipant() {},
     uploadImage(file: File) {
       if (file) {
