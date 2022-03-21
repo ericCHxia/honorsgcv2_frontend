@@ -96,7 +96,7 @@
             }"
             nuxt
           >
-            创建通知
+            创建公告
           </v-btn>
         </div>
       </v-sheet>
