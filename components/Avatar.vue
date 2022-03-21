@@ -1,5 +1,5 @@
 <template>
-  <v-sheet color="grey lighten-4" class="pa-4">
+  <v-sheet color="darken-1" class="pa-4">
     <v-avatar class="mb-4" color="grey darken-1" size="64" @click="settingDialog=true">
       <v-img v-if="user.avatar.trim().length > 0" :src="`/image/200/${user.avatar}`"></v-img>
       <v-img 
@@ -28,8 +28,8 @@
       </v-list-item-content>
     </v-list-item>
     <div class="d-flex justify-space-between mt-4">
-      <v-btn @click.stop="settingDialog = true">设置</v-btn>
-      <v-btn @click.stop="logout">退出</v-btn>
+      <v-btn color="info" @click.stop="settingDialog = true">设置</v-btn>
+      <v-btn color="error" @click.stop="logout"><v-icon>mdi-exit-to-app</v-icon>退出</v-btn>
     </div>
 
     <!-- 用户设置 -->
