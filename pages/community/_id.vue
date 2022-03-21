@@ -23,22 +23,26 @@
         <v-card-title>信息</v-card-title>
         <v-card-text>
           <p>
-            指导者：<a
-              v-for="participant in community.mentors"
-              :key="participant.id"
-              :v-if="participant.valid"
-              @click="userInfo(participant)"
-              >{{ participant.name }}
-            </a>
+            指导者：
+            <template v-for="participant in community.mentors">
+              <a
+                v-if="participant.valid"
+                :key="participant.id"
+                @click="userInfo(participant)"
+                >{{ participant.name }}
+              </a>
+            </template>
           </p>
           <p>
-            参与者：<a
-              v-for="participant in community.participants"
-              :key="participant.id"
-              :v-if="participant.valid"
-              @click="userInfo(participant)"
-              >{{ participant.name }}
-            </a>
+            参与者：
+            <template v-for="participant in community.participants">
+              <a
+                v-if="participant.valid"
+                :key="participant.id"
+                @click="userInfo(participant)"
+                >{{ participant.name }}
+              </a>
+            </template>
           </p>
           <p>
             人数限制：{{ community.participants.length }}/{{
