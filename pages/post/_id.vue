@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-card>
         <honor-user-bar :user="article.user" :date="article.createTime">
-          <template v-if="isAdmin()||article.user.id==$auth.user.id" #tail>
+          <template v-if="isAdmin() || article.user.id == $auth.user.id" #tail>
             <v-menu bottom left>
               <template #activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
@@ -12,7 +12,10 @@
               </template>
 
               <v-list>
-                <v-list-item v-if="isAdmin()&&article.state === 0" @click="changeState(1)">
+                <v-list-item
+                  v-if="isAdmin() && article.state === 0"
+                  @click="changeState(1)"
+                >
                   <v-list-item-title>通过审批</v-list-item-title>
                 </v-list-item>
                 <v-list-item :to="`/post/edit?id=${article.id}`">
@@ -56,9 +59,21 @@
         <template v-if="comments.length > 0">
           <template v-for="(item, index) in comments">
             <v-divider :key="index"></v-divider>
-            <v-card :id="`comment_${item.id}`" :key="item.id" flat class="py-2">
+            <v-card
+              :id="`comment_${item.id}`"
+              :key="'comment' + item.id"
+              flat
+              class="py-2"
+            >
               <honor-user-bar :user="item.user" :date="item.createTime">
-                <template v-if="isAdmin()||item.user.id===$auth.user.id||article.user.id==$auth.user.id" #tail>
+                <template
+                  v-if="
+                    isAdmin() ||
+                    item.user.id === $auth.user.id ||
+                    article.user.id == $auth.user.id
+                  "
+                  #tail
+                >
                   <v-menu bottom left>
                     <template #activator="{ on, attrs }">
                       <v-btn icon v-bind="attrs" v-on="on">
@@ -109,7 +124,7 @@ export default Vue.extend({
         const comments: ArticleComment[] = data.data as ArticleComment[]
         return {
           article,
-          comments,
+          comments
         }
       }
       return { article }
@@ -124,7 +139,7 @@ export default Vue.extend({
       fab: false,
       comments: null,
       article: null,
-      comment: '',
+      comment: ''
     }
   },
   mounted() {
@@ -141,7 +156,7 @@ export default Vue.extend({
           .then(() => {
             this.comment = ''
             this.$toast.success('评论成功', {
-              duration: 1000,
+              duration: 1000
             })
             if (this.article && this.article.id) {
               this.$axios
@@ -151,14 +166,14 @@ export default Vue.extend({
                 })
                 .catch(() => {
                   this.$toast.error('刷新评论失败', {
-                    duration: 1000,
+                    duration: 1000
                   })
                 })
             }
           })
           .catch(() => {
             this.$toast.error('评论失败', {
-              duration: 1000,
+              duration: 1000
             })
           })
       }
@@ -167,12 +182,12 @@ export default Vue.extend({
       this.$axios
         .delete(`/api/article/cmt`, {
           params: {
-            ids: id,
-          },
+            ids: id
+          }
         })
         .then(() => {
           this.$toast.success('删除成功', {
-            duration: 1000,
+            duration: 1000
           })
           if (this.comments) {
             this.comments = this.comments.filter((item) => item.id !== id)
@@ -180,7 +195,7 @@ export default Vue.extend({
         })
         .catch(() => {
           this.$toast.error('删除失败', {
-            duration: 1000,
+            duration: 1000
           })
         })
     },
@@ -189,18 +204,18 @@ export default Vue.extend({
         this.$axios
           .delete(`/api/article`, {
             params: {
-              ids: this.article.id,
-            },
+              ids: this.article.id
+            }
           })
           .then(() => {
             this.$toast.success('删除成功', {
-              duration: 1000,
+              duration: 1000
             })
             this.$router.push('/')
           })
           .catch(() => {
             this.$toast.error('删除失败', {
-              duration: 1000,
+              duration: 1000
             })
           })
       }
@@ -209,7 +224,7 @@ export default Vue.extend({
       if (this.article && this.article.id) {
         try {
           await this.$axios.put(`/api/article/${this.article.id}`, {
-            state,
+            state
           })
           this.$toast.success('操作成功')
           this.$nuxt.refresh()
@@ -221,17 +236,21 @@ export default Vue.extend({
           }
         }
       }
-    },
-  },
+    }
+  }
 })
 </script>
 
 <style>
-code {
+.code-toolbar code {
   background-color: transparent !important;
 }
 
 .markdown-view {
   line-height: normal !important;
+}
+
+.markdown-view img {
+  max-width: 100% !important;
 }
 </style>

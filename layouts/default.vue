@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
-      <Avatar v-if="$auth.loggedIn" :user="user"/>
+      <Avatar v-if="$auth.loggedIn" :user="user" />
 
       <v-divider></v-divider>
       <v-menu offset-y rounded="lg">
@@ -35,10 +35,10 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title"/>
+            <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="user&&user.privilege > 0" router exact to="/admin">
+        <v-list-item v-if="user && user.privilege > 0" router exact to="/admin">
           <v-list-item-action>
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
@@ -62,21 +62,22 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <Nuxt :key="$route.path"/>
+        <Nuxt :key="$route.path" />
       </v-container>
     </v-main>
-    <HonorFooter/>
+    <honor-footer />
   </v-app>
 </template>
-
 
 <script lang="ts">
 import Vue from 'vue'
 import Avatar from '~/components/Avatar.vue'
+import HonorFooter from '~/components/HonorFooter.vue'
 
 export default Vue.extend({
   components: {
     Avatar,
+    HonorFooter
   },
   data() {
     return {
@@ -87,23 +88,23 @@ export default Vue.extend({
         {
           icon: 'mdi-apps',
           title: '主页',
-          to: '/',
+          to: '/'
         },
         {
           icon: 'mdi-post-outline',
           title: '文章',
-          to: '/article',
+          to: '/article'
         },
         {
           title: '公告',
           icon: 'mdi-bell-outline',
-          to: '/notice',
+          to: '/notice'
         },
         {
           title: '共同体',
           icon: 'mdi-forum',
-          to: '/community',
-        },
+          to: '/community'
+        }
       ],
       title: '卓越学院成长共同体平台',
       user: this.$auth.user,
@@ -112,8 +113,7 @@ export default Vue.extend({
       dark: this.$vuetify.theme.dark
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     logout() {
       this.$auth.logout()
