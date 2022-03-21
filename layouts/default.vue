@@ -4,6 +4,25 @@
       <Avatar v-if="$auth.loggedIn" :user="user"/>
 
       <v-divider></v-divider>
+      <v-menu offset-y rounded="lg">
+        <template #activator="{ on, attrs }">
+          <v-btn v-bind="attrs" x-large rounded class="my-3 ml-2" elevation="4" v-on="on">
+            <v-icon color="primary">mdi-plus</v-icon>
+            创建
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="toCreate(0)">
+            <v-list-item-title>文章</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toCreate(1)">
+            <v-list-item-title>公告</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toCreate(2)">
+            <v-list-item-title>共同体</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -30,9 +49,16 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-      <v-toolbar-title v-text="title"/>
-      <v-spacer/>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-switch
+        v-model="dark"
+        inset
+        hide-details
+        :prepend-icon="dark ? 'mdi-brightness-2' : 'mdi-brightness-6'"
+        @change="changeTheme"
+      />
     </v-app-bar>
     <v-main>
       <v-container>
@@ -83,6 +109,7 @@ export default Vue.extend({
       user: this.$auth.user,
       isLogin: this.$auth.loggedIn,
       rightDrawer: false,
+      dark: this.$vuetify.theme.dark
     }
   },
   mounted() {
@@ -91,6 +118,37 @@ export default Vue.extend({
     logout() {
       this.$auth.logout()
     },
-  },
+    changeTheme() {
+      if (this.dark) {
+        this.$vuetify.theme.dark = true
+      } else {
+        this.$vuetify.theme.dark = false
+      }
+    },
+    toCreate(type:number) {
+      if (type===0) {
+        this.$router.push({
+          path: '/post/edit',
+          query: {
+            type: '0'
+          }
+        })
+        this.$nuxt.refresh()
+      }else if(type===1){
+        this.$router.push({
+          path: '/post/edit',
+          query: {
+            type: '1'
+          }
+        })
+        this.$nuxt.refresh()
+      }else if(type===2){
+        this.$router.push({
+          path: '/community/edit'
+        })
+        this.$nuxt.refresh()
+      }
+    }
+  }
 })
 </script>
