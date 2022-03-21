@@ -1,7 +1,13 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12">
-      <v-data-table :headers="headers" :items="comments" class="elevation-1" @dblclick:row="openComment">
+      <v-data-table
+        :headers="headers"
+        :items="comments"
+        class="elevation-1"
+        show-select
+        @dblclick:row="openComment"
+      >
         <template #[`item.actions`]="{ item }">
           <v-icon small class="mr-2"> mdi-pencil</v-icon>
           <v-icon small @click="deleteComment([item])"> mdi-delete </v-icon>
@@ -28,7 +34,7 @@ export default Vue.extend({
     const { data } = await $axios.get('/api/article/cmt')
     const comments: ArticleComment[] = data.data as ArticleComment[]
     return {
-      comments,
+      comments
     }
   },
   data(): Data {
@@ -36,33 +42,34 @@ export default Vue.extend({
       headers: [
         {
           text: '标题',
-          value: 'article.title',
+          value: 'article.title'
         },
         {
           text: '用户',
-          value: 'user.name',
+          value: 'user.name'
         },
         {
           text: '内容',
-          value: 'detail',
+          value: 'detail'
         },
         {
           text: '操作',
           value: 'actions',
-        },
+          sortable: false
+        }
       ],
-      comments: [],
+      comments: []
     }
   },
   methods: {
     async deleteComment(comments: ArticleComment[]) {
       try {
-        await this.$axios.delete(`/api/article/cmt`,{
+        await this.$axios.delete(`/api/article/cmt`, {
           params: {
-            ids: comments.map(cmt => cmt.id).join(','),
-          },
+            ids: comments.map((cmt) => cmt.id).join(',')
+          }
         })
-        this.comments = this.comments.filter(cmt => !comments.includes(cmt))
+        this.comments = this.comments.filter((cmt) => !comments.includes(cmt))
         this.$toast.success('删除成功')
       } catch (e: any) {
         if (e.response && e.response.data.message) {
@@ -73,11 +80,11 @@ export default Vue.extend({
       }
     },
     openComment(_event: MouseEvent, data: any) {
-      const comment:ArticleComment = data.item
+      const comment: ArticleComment = data.item
       this.$router.push({
-        path: `/post/${comment.article.id}#comment_${comment.id}`,
+        path: `/post/${comment.article.id}#comment_${comment.id}`
       })
-    },
-  },
+    }
+  }
 })
 </script>
