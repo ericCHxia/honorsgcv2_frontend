@@ -10,10 +10,10 @@
         >
         </v-img>
         <v-card-title class="headline" v-text="community.title"></v-card-title>
-        <v-card-text
-          class="markdown-view github-markdown-body"
+        <div
+          class="markdown-view github-markdown-body px-4 pt-0 pb-2"
           v-html="$md.render(community.detail)"
-        ></v-card-text>
+        ></div>
       </v-card>
     </v-col>
 
@@ -278,7 +278,9 @@
             <v-btn text color="primary" @click="participantDialog = false"
               >关闭
             </v-btn>
-            <v-btn color="primary"> 确定</v-btn>
+            <v-btn color="primary" @click="deleteParticipant([selectedUser])">
+              确定</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -316,7 +318,7 @@
                   </v-btn>
                 </template>
                 <v-list>
-                  <v-list-item link>
+                  <v-list-item link @click="deleteParticipant(selectedUsers)">
                     <v-list-item-title> 删除</v-list-item-title>
                   </v-list-item>
                   <v-list-item link @click="approve">
@@ -341,7 +343,7 @@
 
           <template #[`item.actions`]="{ item }">
             <v-icon small class="mr-2"> mdi-pencil</v-icon>
-            <v-icon small @click.stop="deleteParticipant(item)">
+            <v-icon small @click="deleteParticipant([item])">
               mdi-delete
             </v-icon>
           </template>
@@ -391,7 +393,11 @@
             <v-row>
               <v-col cols="4">
                 <v-hover v-slot="{ hover }">
-                  <v-card class="my-4 rounded-lg" :elevation="hover ? 12 : 2" @click="beginUpload">
+                  <v-card
+                    class="my-4 rounded-lg"
+                    :elevation="hover ? 12 : 2"
+                    @click="beginUpload"
+                  >
                     <v-img
                       aspect-ratio="1"
                       class="align-center"
@@ -518,6 +524,7 @@ interface Data {
   records: CommunityRecord[]
   imageDialog: boolean
   selectedImage: ImageResponse | null
+  userParticipant: CommunityParticipant | null
 }
 
 // TODO: 更换请求方式 测试记录图片上传
@@ -535,13 +542,15 @@ export default Vue.extend({
           (participant) => participant.id === user.id && participant.valid
         ) !== undefined
 
-      // @ts-ignore
       let isMentor = false
       if (community.mentors) {
         isMentor =
-          community.mentors.find((mentor) => mentor.id === user.id) !==
+          community.mentors.find((mentor) => mentor.id === user.id&& mentor.valid) !==
           undefined
       }
+
+      const userParticipant: CommunityParticipant | null = participants.find((participant) => participant.id === user.id) || null
+
       const validParticipants = participants.filter(
         (participant) => participant.valid
       )
@@ -554,7 +563,8 @@ export default Vue.extend({
         participants,
         isParticipant,
         validParticipants,
-        isMentor
+        isMentor,
+        userParticipant,
       }
     } catch (e: any) {
       error({ statusCode: 404, message: e.response.data.message })
@@ -566,6 +576,7 @@ export default Vue.extend({
       participantDialog: false,
       managerParticipantDialog: false,
       recordDialog: false,
+      userParticipant: null,
       selectedUser: {
         id: 0,
         name: '',
@@ -652,10 +663,12 @@ export default Vue.extend({
     },
     async deleteCommunity() {
       try {
-        if(this.community)await this.$axios.delete('/api/community/' + this.community.id)
+        if (this.community)
+          await this.$axios.delete('/api/community/' + this.community.id)
         this.$router.push('/community')
-      } catch (e:any) {
-        if(e.response.data&&e.response.data.message)this.$toast.error(e.response.data.message)
+      } catch (e: any) {
+        if (e.response.data && e.response.data.message)
+          this.$toast.error(e.response.data.message)
         else this.$toast.error('删除失败')
       }
     },
@@ -676,8 +689,32 @@ export default Vue.extend({
           })
       }
     },
-    deleteParticipant(p: CommunityParticipant) {
-      console.log(p)
+    async deleteParticipant(participants: CommunityParticipant[]) {
+      try {
+        await this.$axios.delete('/api/community/participant/', {
+          params: {
+            communityId: this.community!.id,
+            ids: participants.map((participant) => participant.id).join(',')
+          }
+        })
+        this.participantDialog = false
+        this.dialog = false
+        this.selectedUsers = []
+        this.validParticipants = this.validParticipants!.filter((participant) =>
+          participants.includes(participant)
+        )
+        this.participants = this.participants!.filter((participant) =>
+          participants.includes(participant)
+        )
+        this.$toast.success('删除成功')
+        this.$nuxt.refresh()
+      } catch (e: any) {
+        if (e.response.data && e.response.data.message) {
+          this.$toast.error(e.response.data.message)
+        } else {
+          this.$toast.error('删除失败')
+        }
+      }
     },
     toggle() {
       this.$nextTick(() => {
@@ -708,6 +745,7 @@ export default Vue.extend({
       const fileInput = document.createElement('input')
       fileInput.type = 'file'
       fileInput.style.display = 'none'
+      fileInput.accept = 'image/png, image/jpeg, image/webp'
       fileInput.onchange = (event: any) => {
         this.uploadImage(event.target.files[0])
         document.body.removeChild(fileInput)
@@ -823,10 +861,9 @@ export default Vue.extend({
     changeEnrolling(status: boolean) {
       if (this.community && this.community.id) {
         this.$axios
-          .post('/api/community', {
+          .put(`/api/community/${this.community.id}`, {
             id: this.community.id,
-            enrolling: status,
-            update: true
+            enrolling: status
           })
           .then(() => {
             this.$toast.success('修改成功', {
@@ -842,17 +879,17 @@ export default Vue.extend({
       }
     },
     // 修改社团状态
-    async changeState(status: boolean) {
+    async changeState(state: number) {
       if (this.community && this.community.id) {
         try {
           await this.$axios.put(`/api/community/${this.community.id}`, {
-            status
+            state
           })
           this.$toast.success('修改成功')
           this.$nuxt.refresh()
         } catch (error: any) {
-          if (error.response.message) {
-            this.$toast.error(error.response.message)
+          if (error.response.data.message) {
+            this.$toast.error(error.response.data.message)
           } else {
             this.$toast.error('修改失败')
           }
@@ -874,8 +911,8 @@ export default Vue.extend({
         this.selectedUsers = []
         this.$nuxt.refresh()
       } catch (error: any) {
-        if (error.response.message) {
-          this.$toast.error(error.response.message)
+        if (error.response.data.message) {
+          this.$toast.error(error.response.data.message)
         } else {
           this.$toast.error('修改失败')
         }
@@ -920,7 +957,7 @@ export default Vue.extend({
 </script>
 
 <style>
-code {
+.code-toolbar code {
   background-color: transparent !important;
 }
 
