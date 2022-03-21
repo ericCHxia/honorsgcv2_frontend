@@ -2,7 +2,7 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="12" md="12">
       <!-- 搜索框 -->
-      <v-row class="mb-0">
+      <v-row class="mb-0" justify="end">
         <v-col>
           <v-text-field
             v-model="searchText"
@@ -13,7 +13,7 @@
             @keydown="keydown"
           ></v-text-field>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="4" sm="3" md="2">
           <v-select
             v-model="selectUser"
             :items="selectUserItems"
@@ -23,7 +23,7 @@
             hide-details
           ></v-select>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="5" sm="4" md="3">
           <v-select
             v-model="selectType"
             :items="types"
@@ -35,10 +35,10 @@
           ></v-select>
         </v-col>
         <v-col cols="auto">
-          <v-btn large nuxt :to="search">搜索 </v-btn>
+          <v-btn large nuxt :to="search" color="primary">搜索 </v-btn>
         </v-col>
       </v-row>
-
+      <!-- 列表 -->
       <v-sheet class="mx-auto mb-4">
         <v-container>
           <v-row
@@ -104,8 +104,9 @@
                         text
                         :to="{
                           name: 'community-id',
-                          params: { id: community.id },
+                          params: { id: community.id }
                         }"
+                        color="secondary"
                         >浏览
                       </v-btn>
                     </template>
@@ -155,21 +156,21 @@ export default Vue.extend({
       } else {
         return value
       }
-    },
+    }
   },
   async asyncData({ $axios, query, app }) {
     const typeResponse = await $axios.get('/api/community/type')
     const types: Array<CommunityType> = typeResponse.data.data
     types.unshift({
       id: -1,
-      name: '全部',
+      name: '全部'
     })
     const selectType = query.type ? Number(query.type) : -1
     const selectUser = query.user ? Number(query.user) : -1
     const params: any = {
       page: 0,
       type: selectType,
-      search: query.q,
+      search: query.q
     }
     if (selectUser === 2) {
       if (app.$auth.user) params.mentor = app.$auth.user.id
@@ -181,7 +182,7 @@ export default Vue.extend({
       if (app.$auth.user) params.participant = app.$auth.user.id
     }
     const communitiesResponse = await $axios.get('/api/community', {
-      params,
+      params
     })
     const communities: Page<Community> = communitiesResponse.data.data
     return {
@@ -190,7 +191,7 @@ export default Vue.extend({
       types,
       selectUser,
       communities: communities.content,
-      totalPages: communities.totalPages,
+      totalPages: communities.totalPages
     }
   },
   data(): Data {
@@ -205,22 +206,22 @@ export default Vue.extend({
       selectUserItems: [
         {
           id: -1,
-          name: '全部',
+          name: '全部'
         },
         {
           id: 0,
-          name: '我创建',
+          name: '我创建'
         },
         {
           id: 1,
-          name: '我参与',
+          name: '我参与'
         },
         {
           id: 2,
-          name: '我指导',
-        },
+          name: '我指导'
+        }
       ],
-      selectUser: -1,
+      selectUser: -1
     }
   },
   computed: {
@@ -230,14 +231,14 @@ export default Vue.extend({
         query: {
           q: this.searchText,
           type: String(this.selectType),
-          user: String(this.selectUser),
-        },
+          user: String(this.selectUser)
+        }
       }
     },
     params(): any {
-      const data:any= {
+      const data: any = {
         q: this.searchText,
-        type: String(this.selectType),
+        type: String(this.selectType)
       }
       if (this.selectUser === 2) {
         if (this.$auth.user) data.mentor = this.$auth.user.id
@@ -249,12 +250,12 @@ export default Vue.extend({
         if (this.$auth.user) data.participant = this.$auth.user.id
       }
       return data
-    },
+    }
   },
   watch: {
     $route() {
       this.$router.go(0)
-    },
+    }
   },
   methods: {
     loadMore() {
@@ -267,7 +268,7 @@ export default Vue.extend({
       setTimeout(async () => {
         this.page++
         const { data } = await this.$axios.get('/api/community', {
-          params: this.params,
+          params: this.params
         })
         const page: Page<Community> = data.data
         if (page.last) {
@@ -289,8 +290,8 @@ export default Vue.extend({
       if (key.code === 'Enter') {
         this.$router.push(this.search)
       }
-    },
-  },
+    }
+  }
 })
 </script>
 
