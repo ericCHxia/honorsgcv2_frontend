@@ -1,6 +1,17 @@
 <template>
   <v-row>
-    <v-col cols="8">
+    <v-col cols="12" sm="4" order-sm="1">
+      <v-card>
+        <v-card-title>添加类型</v-card-title>
+        <v-card-text>
+          <v-text-field v-model="newTypeName" label="类型名" outlined></v-text-field>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn color="primary" @click="addType">添加</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+    <v-col cols="12" sm="8" order-sm="0">
       <v-data-table
         :headers="headers"
         :items="types"
@@ -13,17 +24,6 @@
           </v-icon>
         </template>
       </v-data-table>
-    </v-col>
-    <v-col cols="4">
-      <v-card>
-        <v-card-title>添加类型</v-card-title>
-        <v-card-text>
-          <v-text-field v-model="newTypeName" label="类型名" outlined></v-text-field>
-        </v-card-text>
-        <v-card-actions class="justify-end" @click="addType">
-          <v-btn>添加</v-btn>
-        </v-card-actions>
-      </v-card>
     </v-col>
   </v-row>
 </template>
