@@ -139,7 +139,7 @@
         <v-card-title>打卡记录</v-card-title>
         <template v-for="(item, index) in records">
           <v-divider v-if="index" :key="index"></v-divider>
-          <v-card :key="item.id" flat class="py-2">
+          <v-card :key="'record' + item.id" flat class="py-2">
             <honor-user-bar :user="item.user" :date="item.createTime">
               <template #tail>
                 <v-menu bottom left>
