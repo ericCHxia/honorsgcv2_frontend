@@ -62,7 +62,7 @@
           </p>
           <p>
             共同体状态：
-            <v-chip v-if="community.state === 1" color="green" dark>
+            <v-chip v-if="community.state === 1" color="success" dark>
               可见</v-chip
             >
             <v-chip v-else-if="community.state === 0" color="grey" dark>
