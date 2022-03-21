@@ -16,7 +16,7 @@
                     health.components.diskSpace.details.total) *
                     100
                 "
-                color="teal"
+                color="primary"
               >
                 {{
                   Math.floor(
