@@ -15,6 +15,14 @@
         </v-card-actions>
       </v-card>
     </v-col>
+    <v-col cols="12" sm="8" order-sm="0">
+      <v-data-table :headers="headers" :items="tags" class="elevation-1">
+        <template #[`item.actions`]="{ item }">
+          <v-icon small class="mr-2"> mdi-pencil</v-icon>
+          <v-icon small @click="deleteTag(item)"> mdi-delete </v-icon>
+        </template>
+      </v-data-table>
+    </v-col>
   </v-row>
 </template>
 
