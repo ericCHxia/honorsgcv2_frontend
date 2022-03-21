@@ -54,7 +54,11 @@ export default Vue.extend({
       })
       await app.$auth.setUserToken(String(data.data.token))
       await app.$auth.fetchUser()
-      redirect('/')
+      if (app.$auth.user&&!app.$auth.user.accountNonLocked) {
+        redirect('/reset')
+      } else {
+        redirect('/')
+      }
     }
   },
   data() {
