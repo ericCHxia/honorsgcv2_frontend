@@ -117,21 +117,24 @@
               @click="changeEnrolling(false)"
               >关闭报名</v-btn
             >
-            <v-btn
-              v-if="community.state === 1"
-              class="ma-1"
-              @click="changeState(2)"
-            >
-              隐藏
-            </v-btn>
-            <v-btn
-              v-else-if="community.state === 0"
-              class="ma-1"
-              @click="changeState(1)"
-            >
-              通过审批
-            </v-btn>
-            <v-btn v-else class="ma-1" @click="changeState(1)">可见</v-btn>
+            <template v-if="isAdmin()">
+              <v-btn
+                v-if="community.state === 1"
+                class="ma-1"
+                @click="changeState(2)"
+              >
+                隐藏
+              </v-btn>
+              <v-btn
+                v-else-if="community.state === 0"
+                class="ma-1"
+                @click="changeState(1)"
+              >
+                通过审批
+              </v-btn>
+              <v-btn v-else class="ma-1" @click="changeState(1)">可见</v-btn>
+            </template>
+
             <v-btn class="ma-1" @click.stop="deleteCommunity">删除</v-btn>
           </v-card>
         </v-card-actions>
@@ -545,11 +548,13 @@ export default Vue.extend({
       let isMentor = false
       if (community.mentors) {
         isMentor =
-          community.mentors.find((mentor) => mentor.id === user.id&& mentor.valid) !==
-          undefined
+          community.mentors.find(
+            (mentor) => mentor.id === user.id && mentor.valid
+          ) !== undefined
       }
 
-      const userParticipant: CommunityParticipant | null = participants.find((participant) => participant.id === user.id) || null
+      const userParticipant: CommunityParticipant | null =
+        participants.find((participant) => participant.id === user.id) || null
 
       const validParticipants = participants.filter(
         (participant) => participant.valid
@@ -564,7 +569,7 @@ export default Vue.extend({
         isParticipant,
         validParticipants,
         isMentor,
-        userParticipant,
+        userParticipant
       }
     } catch (e: any) {
       error({ statusCode: 404, message: e.response.data.message })
