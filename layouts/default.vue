@@ -6,7 +6,14 @@
       <v-divider></v-divider>
       <v-menu offset-y rounded="lg">
         <template #activator="{ on, attrs }">
-          <v-btn v-bind="attrs" x-large rounded class="my-3 ml-2" elevation="4" v-on="on">
+          <v-btn
+            v-bind="attrs"
+            x-large
+            rounded
+            class="my-3 ml-2"
+            elevation="4"
+            v-on="on"
+          >
             <v-icon color="primary">mdi-plus</v-icon>
             创建
           </v-btn>
@@ -50,7 +57,7 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-show="!$vuetify.breakpoint.xs" v-text="title" />
       <v-spacer />
       <v-switch
         v-model="dark"
@@ -125,8 +132,8 @@ export default Vue.extend({
         this.$vuetify.theme.dark = false
       }
     },
-    toCreate(type:number) {
-      if (type===0) {
+    toCreate(type: number) {
+      if (type === 0) {
         this.$router.push({
           path: '/post/edit',
           query: {
@@ -134,7 +141,7 @@ export default Vue.extend({
           }
         })
         this.$nuxt.refresh()
-      }else if(type===1){
+      } else if (type === 1) {
         this.$router.push({
           path: '/post/edit',
           query: {
@@ -142,7 +149,7 @@ export default Vue.extend({
           }
         })
         this.$nuxt.refresh()
-      }else if(type===2){
+      } else if (type === 2) {
         this.$router.push({
           path: '/community/edit'
         })

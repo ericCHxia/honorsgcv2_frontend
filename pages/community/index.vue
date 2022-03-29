@@ -237,7 +237,7 @@ export default Vue.extend({
     },
     params(): any {
       const data: any = {
-        page:this.page,
+        page: this.page,
         q: this.searchText,
         type: String(this.selectType)
       }
