@@ -113,6 +113,7 @@ export class User {
   subject?: string
   userId?: string
   username?: string
+  phone?: string
   avatar?:string
 }
 

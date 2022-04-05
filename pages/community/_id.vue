@@ -217,9 +217,9 @@
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-content>
-                      <v-list-item-title>QQ</v-list-item-title>
+                      <v-list-item-title>手机号</v-list-item-title>
                       <v-list-item-subtitle>
-                        {{ selectedUser.qq ? selectedUser.qq : '不存在' }}
+                        {{ selectedUser.phone ? selectedUser.phone : '不存在' }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
