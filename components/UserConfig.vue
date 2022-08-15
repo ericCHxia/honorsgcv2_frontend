@@ -70,8 +70,8 @@
               readonly
             ></v-text-field>
             <v-text-field
-              v-model="inputuser.qq"
-              label="QQ"
+              v-model="inputuser.phone"
+              label="手机号"
               readonly
             ></v-text-field>
           </v-col>

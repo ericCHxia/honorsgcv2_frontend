@@ -174,14 +174,16 @@ export default {
   router: {
     middleware: ['auth'],
     extendRoutes(routes, resolve) {
-      const router = [
-        {
-          path: "/community/edit/:id",
-          name: "CommunityEditorId",
-          component: resolve('pages/community/edit.vue'),
-        }
-      ];
-      routes.push(...router);
+      if (!routes.find(route => route.name === 'CommunityEditorId')){
+        const router = [
+          {
+            path: "/community/edit/:id",
+            name: "CommunityEditorId",
+            component: resolve('pages/community/edit.vue'),
+          }
+        ];
+        routes.push(...router);
+      }
     }
   },
 

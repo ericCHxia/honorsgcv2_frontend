@@ -41,6 +41,8 @@ services:
         runtime: custom
         timeout: 120
         caPort: 9000
+        instanceConcurrency: 12
+        memorySize: 256
       triggers:
         - name: httpTrigger
           type: http
