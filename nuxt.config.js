@@ -205,5 +205,10 @@ export default {
   toast: {
     position: 'top-center',
     duration: 2000,
+  },
+
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
   }
 }
