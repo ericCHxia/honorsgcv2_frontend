@@ -7,8 +7,8 @@
           <v-card-text>
             <v-text-field
               v-model="login.username"
-              label="用户名"
-              :rules="[(v) => !!v || '请输入用户名']"
+              label="学号"
+              :rules="[(v) => !!v || '请输入学号']"
             ></v-text-field>
             <honor-password-field
               v-model="login.password"
