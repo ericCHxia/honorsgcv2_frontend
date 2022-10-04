@@ -45,7 +45,7 @@
             </template>
           </p>
           <p>
-            人数限制：{{ community.participants.length }}/{{
+            人数限制：{{ validParticipants.length }}/{{
               community.limit > 0 ? community.limit : '无限制'
             }}
           </p>
