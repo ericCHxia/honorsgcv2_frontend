@@ -82,9 +82,9 @@ export type ImageResponse = {
 
 export type Community = {
   id?: number | null
-  title: string | null
+  title: string
   detail: string | null
-  describe: string | null
+  describe: string
   createDate?: string | null
   user?: UserSimple | null
   type: CommunityType | null

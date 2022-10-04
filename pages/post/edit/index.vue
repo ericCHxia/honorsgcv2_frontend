@@ -15,8 +15,10 @@
               </v-card-title>
 
               <v-card-text>
-                <v-text-field v-model="content.title" label="标题"></v-text-field>
-                <v-textarea v-model="content.describe" label="描述"></v-textarea>
+                <v-text-field v-model="content.title" label="标题"
+                              :rules="titleRule" :counter="$store.state.maxTitleLength">
+                ></v-text-field>
+                <v-textarea v-model="content.describe" label="描述" :counter="$store.state.maxDescriptionLength" :rules="describeRules"></v-textarea>
                 <v-select
                   v-model="content.type"
                   label="分类"
@@ -85,6 +87,8 @@ import {ArticleRequest, ArticleTag} from '~/src/article'
         tags,
         content: {
           type: Number(query.type),
+          title: '',
+          describe: '',
           haveComment: true
         },
       }
@@ -110,6 +114,7 @@ export default class extends Vue {
   tags:ArticleTag[] = []
   async save(){
     let content:any
+    // TODO: 设置前端校验
     try {
       if (this.content.id) {
         const {data} = await this.$axios.put("/api/article/"+this.content.id, this.content)
@@ -130,6 +135,20 @@ export default class extends Vue {
   }
 
   couldCommit = false
+
+  get describeRules() {
+    return [
+      (v: string) => !!v.trim() || '描述不能为空',
+      (v: string) => v.length <= this.$store.state.maxDescriptionLength || `描述不能超过${this.$store.state.maxDescriptionLength}个字符`,
+    ]
+  }
+
+  get titleRule() {
+    return [
+      (v: string) => !!v.trim() || '标题不能为空',
+      (v: string) => v.length <= this.$store.state.maxTitleLength || `标题不能超过${this.$store.state.maxTitleLength}个字符`,
+    ]
+  }
 }
 </script>
 
