@@ -29,6 +29,7 @@
             item-text="text"
             item-value="value"
             label="学期"
+            menu-props="auto"
             solo
             prepend-inner-icon="mdi-calendar"
             hide-details
@@ -234,6 +235,10 @@ export default Vue.extend({
         {
           text: '全部',
           value: -1,
+        },
+        {
+          text: '2022-2023 第一学期',
+          value: 6,
         },
         {
           text: '2021-2022 第二学期',
