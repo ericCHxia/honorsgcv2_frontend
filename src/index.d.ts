@@ -83,17 +83,17 @@ export type ImageResponse = {
 export type Community = {
   id?: number | null
   title: string
-  detail: string | null
+  detail: string
   describe: string
   createDate?: string | null
-  user?: UserSimple | null
+  user: UserSimple
   type: CommunityType | null
-  img: ImageResponse | null | string
+  img: ImageResponse | string
   limit: number | null
   state?: number | null
   enrolling?: boolean | null
-  needMentor: boolean | null
-  registrationType: number | null
+  needMentor: boolean
+  registrationType: number
   participants?: CommunityParticipant[]
   mentors?: CommunityParticipant[]
 }
@@ -108,7 +108,7 @@ export class User {
   enabled?: boolean
   id?: number
   name?: string
-  privilege?: number
+  privilege: number
   qq?: string
   subject?: string
   userId?: string

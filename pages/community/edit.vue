@@ -111,8 +111,12 @@ export default Vue.extend({
         needMentor: true,
         registrationType: 0,
         limit: 0,
-        img: null,
-        describe: ''
+        img: '',
+        describe: '',
+        user:{
+          id: 0,
+          name: '',
+        }
       },
       typeId: null,
       types: [],

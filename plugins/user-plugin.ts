@@ -4,7 +4,7 @@ import { ImageResponse, User } from '~/src'
 
 const userPlugin:Plugin = ({app,$axios}) => {
     Vue.prototype.isAdmin = () => {
-        const user:User = app.$auth.user as User
+        const user:User = app.$auth.user as unknown as User
 
         return user && user.authorities && user.authorities.includes('ADMIN')
     }

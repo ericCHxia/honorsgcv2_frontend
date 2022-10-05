@@ -74,6 +74,7 @@ export default Vue.extend({
         userId: '',
         qq: '',
         college: '',
+        privilege: 0,
       },
       avatarFile: null,
       showAvatarDialog: false,

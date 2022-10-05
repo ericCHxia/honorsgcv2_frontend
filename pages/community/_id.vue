@@ -523,7 +523,7 @@ interface Data {
   recordContent: string
   recordImage: File | null
   imageBase64: string
-  community: Community | null
+  community: Community
   records: CommunityRecord[]
   imageDialog: boolean
   selectedImage: ImageResponse | null
@@ -539,7 +539,7 @@ export default Vue.extend({
       const community: Community = data.data as Community
       // @ts-ignore
       const participants = community.mentors.concat(community.participants)
-      const user: User = $auth.user as User
+      const user: User = $auth.user as unknown as User
 
       const isParticipant =
         participants.find(
@@ -644,7 +644,26 @@ export default Vue.extend({
       records: [],
       imageDialog: false,
       selectedImage: null,
-      community: null,
+      community: {
+        id: 0,
+        title: '',
+        describe: '',
+        detail: '',
+        participants: [],
+        mentors: [],
+        limit: 0,
+        type: {
+          id: 0,
+          name: ''
+        },
+        img: '',
+        needMentor: false,
+        registrationType:0,
+        user: {
+          id: 0,
+          name: '',
+        }
+      },
       countValidParticipants: 0
     }
   },
