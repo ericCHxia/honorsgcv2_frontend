@@ -94,7 +94,7 @@ export type Community = {
   enrolling?: boolean | null
   needMentor: boolean | null
   registrationType: number | null
-  participants?: number | CommunityParticipant[]
+  participants?: CommunityParticipant[]
   mentors?: CommunityParticipant[]
 }
 

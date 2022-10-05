@@ -45,7 +45,7 @@
             </template>
           </p>
           <p>
-            人数限制：{{ validParticipants.length }}/{{
+            人数限制：{{ countValidParticipants }}/{{
               community.limit > 0 ? community.limit : '无限制'
             }}
           </p>
@@ -528,6 +528,7 @@ interface Data {
   imageDialog: boolean
   selectedImage: ImageResponse | null
   userParticipant: CommunityParticipant | null
+  countValidParticipants: number
 }
 
 // TODO: 更换请求方式 测试记录图片上传
@@ -559,6 +560,10 @@ export default Vue.extend({
       const validParticipants = participants.filter(
         (participant) => participant.valid
       )
+      // @ts-ignore
+      const countValidParticipants = community.participants.filter(
+        (participant) => participant.valid
+      ).length
       const recordResponse = await $axios.get('/api/community/rec/' + params.id)
       const records: CommunityRecord[] = recordResponse.data
         .data as CommunityRecord[]
@@ -569,7 +574,8 @@ export default Vue.extend({
         isParticipant,
         validParticipants,
         isMentor,
-        userParticipant
+        userParticipant,
+        countValidParticipants
       }
     } catch (e: any) {
       error({ statusCode: 404, message: e.response.data.message })
@@ -638,7 +644,8 @@ export default Vue.extend({
       records: [],
       imageDialog: false,
       selectedImage: null,
-      community: null
+      community: null,
+      countValidParticipants: 0
     }
   },
   computed: {
@@ -711,6 +718,9 @@ export default Vue.extend({
         this.participants = this.participants!.filter((participant) =>
           participants.includes(participant)
         )
+        this.countValidParticipants -= participants.filter(
+          (participant) => participant.valid
+        ).length
         this.$toast.success('删除成功')
         this.$nuxt.refresh()
       } catch (e: any) {
