@@ -26,9 +26,9 @@
             指导者：
             <template v-for="participant in community.mentors">
               <a
-                class="participant"
                 v-if="participant.valid"
                 :key="participant.id"
+                class="participant"
                 href="javascript:;"
                 @click="userInfo(participant)"
                 >{{ participant.name }}
@@ -39,9 +39,9 @@
             参与者：
             <template v-for="participant in community.participants">
               <a
-                class="participant"
                 v-if="participant.valid"
                 :key="participant.id"
+                class="participant"
                 href="javascript:;"
                 @click="userInfo(participant)"
                 >{{ participant.name }}
