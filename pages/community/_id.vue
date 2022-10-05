@@ -26,8 +26,10 @@
             指导者：
             <template v-for="participant in community.mentors">
               <a
+                class="participant"
                 v-if="participant.valid"
                 :key="participant.id"
+                href="javascript:;"
                 @click="userInfo(participant)"
                 >{{ participant.name }}
               </a>
@@ -37,8 +39,10 @@
             参与者：
             <template v-for="participant in community.participants">
               <a
+                class="participant"
                 v-if="participant.valid"
                 :key="participant.id"
+                href="javascript:;"
                 @click="userInfo(participant)"
                 >{{ participant.name }}
               </a>
@@ -689,8 +693,11 @@ export default Vue.extend({
   },
   methods: {
     userInfo(participant: CommunityParticipant) {
-      this.selectedUser = participant
-      this.dialog = true
+      const user = this.$auth.user as unknown as User
+      if(user.privilege > 0 || user.id === this.community.user.id) {
+        this.selectedUser = participant
+        this.dialog = true
+      }
     },
     async deleteCommunity() {
       try {
@@ -989,6 +996,12 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+.participant {
+  text-decoration: none;
+}
+</style>
 
 <style>
 .code-toolbar code {
