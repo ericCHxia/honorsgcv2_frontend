@@ -7,6 +7,7 @@
     :label="label"
     clearable
     @click:append="show = !show"
+    @keyup="keyup"
   ></v-text-field>
 </template>
 
@@ -61,6 +62,11 @@ export default Vue.extend({
   },
   created() {
     this.inputValue = this.value
+  },
+  methods: {
+    keyup(inputValue:any) {
+      this.$emit('keyup', inputValue)
+    }
   }
 })
 </script>
