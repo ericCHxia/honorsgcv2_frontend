@@ -224,7 +224,7 @@ export default Vue.extend({
     },
   },
   async asyncData({ $axios }) {
-    const res = await $axios.get('/api/user')
+    const res = await $axios.get('/api/users/mine')
     const articles = await $axios.get('/api/article', {
       params: {
         type: 0,

@@ -233,7 +233,7 @@ export default Vue.extend({
         const image: ImageResponse = imgRes.data.data
         const formdata2 = new FormData()
         formdata2.append('avatar', image.name)
-        await this.$axios.post('/api/user/avatar', formdata2)
+        await this.$axios.post('/api/users/avatar', formdata2)
         this.$toast.success('上传成功')
         this.showAvatarDialog = false
         await this.$auth.fetchUser()
@@ -252,7 +252,7 @@ export default Vue.extend({
         const formdata = new FormData()
         formdata.set('oldPassword ', Md5.hashStr(this.oldPassword))
         formdata.set('newPassword ', Md5.hashStr(this.newPassword))
-        await this.$axios.post('/api/user/password', formdata)
+        await this.$axios.post('/api/users/password', formdata)
         this.$toast.success('修改成功', {
           onComplete: () => {
             this.$auth.logout()

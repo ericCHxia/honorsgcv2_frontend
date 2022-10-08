@@ -159,7 +159,7 @@ export default {
             url: '/api/login',
             method: 'post',
           },
-          user: { url: '/api/user', method: 'get', propertyName: 'data' },
+          user: { url: '/api/users/mine', method: 'get', propertyName: 'data' },
         }
       }
     },

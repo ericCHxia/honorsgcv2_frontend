@@ -55,7 +55,7 @@ export default Vue.extend({
       formdata.append('newPassword', Md5.hashStr(this.newPassword).toString())
       formdata.append('oldPassword', '')
       try {
-        await this.$axios.post('/api/user/password', formdata)
+        await this.$axios.post('/api/users/password', formdata)
         this.$toast.success('密码重置成功')
         this.$router.push('/')
       } catch (e: any) {
