@@ -155,3 +155,9 @@ declare module '@nuxt/types' {
 declare module '*.vue' {
   export default Vue
 }
+
+export type UserOptions = {
+  classId: string[]
+  college: string[]
+  subject: string[]
+}

@@ -75,7 +75,7 @@
           <template #activator>
             <v-list-item-title>用户管理</v-list-item-title>
           </template>
-          <v-list-item>
+          <v-list-item to="/admin/user">
             <v-list-item-content>
               <v-list-item-title>查看</v-list-item-title>
             </v-list-item-content>
