@@ -6,18 +6,10 @@
         <v-row class="flex-child">
           <v-col cols="6">
             <clipper-upload v-model="imgFile">
-              <v-avatar class="mb-4" color="grey darken-1" size="125">
+              <v-avatar class="mb-4" color="blue-grey lighten-4" size="125">
                 <v-img
-                  v-if="inputuser.avatar.trim() == ''"
                   id="avatar"
-                  :src="`https://sdn.geekzu.org/avatar/${inputuser.id}?s=125&d=identicon`"
-                  class="alige-center"
-                >
-                </v-img>
-                <v-img
-                  v-else
-                  id="avatar"
-                  :src="`/image/200/${inputuser.avatar}`"
+                  :src="avatar"
                   class="alige-center"
                 >
                 </v-img>
@@ -144,6 +136,7 @@
 import { PropType } from '@vue/composition-api'
 import Vue from 'vue'
 import { Md5 } from 'ts-md5'
+import { identicon } from 'minidenticons'
 import { ImageResponse, User } from '~/src'
 
 interface Data {
@@ -180,7 +173,7 @@ export default Vue.extend({
       inputuser: this.user,
       showAvatarDialog: false,
       inputValue: this.value,
-      imgDataUrl: 'https://sdn.geekzu.org/avatar/456?s=500&d=identicon',
+      imgDataUrl: '',
       imgData: '',
       imgFile: null,
       changePasswordDialog: false,
@@ -195,6 +188,15 @@ export default Vue.extend({
       if (this.user.privilege === 1) return '管理员'
       return '普通用户'
     },
+    avatar(): string {
+      if (this.inputuser.avatar.trim().length > 0) {
+        return `/image/50/${this.inputuser.avatar}`
+      } else {
+        const data = identicon(String(this.inputuser.id))
+        const out = 'data:image/svg+xml;utf8,' + encodeURIComponent(data);
+        return out
+      }
+    }
   },
   watch: {
     inputValue(value: boolean) {

@@ -1,12 +1,7 @@
 <template>
   <v-sheet color="darken-1" class="pa-4">
-    <v-avatar class="mb-4" color="grey darken-1" size="64" @click="settingDialog=true">
-      <v-img v-if="user.avatar.trim().length > 0" :src="`/image/200/${user.avatar}`"></v-img>
-      <v-img 
-        v-else
-        :src="`https://sdn.geekzu.org/avatar/${user.id}?s=64&d=identicon`"
-      >
-      </v-img>
+    <v-avatar class="mb-4" color="blue-grey lighten-4" size="64" @click="settingDialog=true">
+      <v-img :src="avatar"></v-img>
     </v-avatar>
 
     <v-file-input
@@ -41,6 +36,7 @@
 <script lang="ts">
 import { PropType } from '@vue/composition-api'
 import Vue from 'vue'
+import { identicon } from 'minidenticons'
 import { ImageResponse, User } from '~/src'
 import UserConfig from '@/components/UserConfig.vue'
 
@@ -70,11 +66,13 @@ export default Vue.extend({
     return {
       settingDialog: false,
       inputuser: {
+        id: 0,
         name: '',
         userId: '',
         qq: '',
         college: '',
         privilege: 0,
+        avatar: '',
       },
       avatarFile: null,
       showAvatarDialog: false,
@@ -86,6 +84,15 @@ export default Vue.extend({
       if (this.user.privilege === 1) return '管理员'
       return '普通用户'
     },
+    avatar(): string {
+      if (this.user.avatar.trim().length > 0) {
+        return `/image/50/${this.user.avatar}`
+      } else {
+        const data = identicon(String(this.user.id))
+        const out = 'data:image/svg+xml;utf8,' + encodeURIComponent(data);
+        return out
+      }
+    }
   },
   created() {
     this.inputuser = this.user

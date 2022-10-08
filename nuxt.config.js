@@ -136,7 +136,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     extractCSS: true,
-    transpile: ['vuetify/lib']
+    transpile: ['vuetify/lib','minidenticons']
   },
 
   // Auth module configuration: https://auth.nuxtjs.org/

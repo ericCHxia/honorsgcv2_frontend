@@ -106,7 +106,7 @@ export class User {
   college?: string
   credentialsNonExpired?: boolean
   enabled?: boolean
-  id?: number
+  id: number
   name?: string
   privilege: number
   qq?: string
@@ -114,7 +114,7 @@ export class User {
   userId?: string
   username?: string
   phone?: string
-  avatar?:string
+  avatar:string
 }
 
 export interface CommunityRecord{
