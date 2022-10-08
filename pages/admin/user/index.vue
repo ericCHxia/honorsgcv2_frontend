@@ -189,8 +189,12 @@ export default class extends Vue {
     // TODO: 用户编辑
   }
 
-  @Watch("option", { immediate: true, deep: true })
+  @Watch("option", { deep: true })
   optionHandler(val: DataOptions) {
+    if(this.page.pageable.pageNumber === val.page - 1 && this.page.pageable.pageSize === val.itemsPerPage)
+    {
+      return
+    }
     this.loading = true
     this.$axios.get('/api/users', {
       params: {

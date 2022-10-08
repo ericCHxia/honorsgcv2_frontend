@@ -184,11 +184,13 @@ export default class extends Vue {
     page: 1,
     itemsPerPage: 10,
     sortBy: [],
-    sortDesc: [true],
+    sortDesc: [
+      true
+    ],
     groupBy: [],
     groupDesc: [],
-    multiSort: false,
     mustSort: false,
+    multiSort: false
   }
 
   semesters = [
@@ -280,8 +282,12 @@ export default class extends Vue {
     })
   }
 
-  @Watch("option", { immediate: true, deep: true })
+  @Watch("option", { deep: true })
   optionHandler(val: DataOptions) {
+    if(this.page.pageable.pageNumber === val.page - 1 && this.page.pageable.pageSize === val.itemsPerPage)
+    {
+      return
+    }
     this.loading = true
     this.$axios.get('/api/community', {
       params: {
