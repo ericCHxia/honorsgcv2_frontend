@@ -52,11 +52,6 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  filters: {
-    formatDate (val: number) {
-      return new Date(val).toLocaleString()
-    },
-  },
   async asyncData({$axios, params, error, query}) {
     try {
       const param = {

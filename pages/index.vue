@@ -218,10 +218,6 @@ export default Vue.extend({
       if (value.length < 10) return value
       return value.substr(0, 10) + '...'
     },
-    formatDate(value: number) {
-      if (!value) return ''
-      return new Date(value).toLocaleString()
-    },
   },
   async asyncData({ $axios }) {
     const res = await $axios.get('/api/users/mine')

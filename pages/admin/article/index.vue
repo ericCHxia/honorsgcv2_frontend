@@ -60,12 +60,6 @@ interface Data {
 
 export default Vue.extend({
   name: 'ArticleList',
-  filters: {
-    formatDate(value: number) {
-      if (!value) return ''
-      return new Date(value).toLocaleString()
-    },
-  },
   layout: 'admin',
   async asyncData({ $axios }): Promise<object | void> {
     const { data } = await $axios.get('/api/article', {
