@@ -22,9 +22,10 @@
                   </v-card>
                 </v-hover>
 
-                <v-text-field v-model="content.title" label="标题" :rules="titleRule" :counter="$store.state.maxTitleLength">
+                <v-text-field v-model="content.title" label="标题" :rules="titleRule"
+                  :counter="$store.state.maxTitleLength">
                 </v-text-field>
-                <v-text-field v-model="content.limit" label="人数限制">
+                <v-text-field v-model="content.limit" label="人数限制" :rules="limitRule">
                   <template #append>
                     <v-tooltip bottom>
                       <template #activator="{ on }">
@@ -69,7 +70,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import HonorEditor from '@/components/Editor.vue'
-import { CommunityType, Community } from '~/src'
+import { CommunityType, Community, CommunityRequestBody } from '~/src'
 
 interface Data {
   content: Community
@@ -80,6 +81,7 @@ interface Data {
   uploadImageBase64: string
   describeRule: ((v: string) => (string | boolean))[]
   titleRule: ((v: string) => (string | boolean))[]
+  limitRule: ((v: string) => (string | boolean))[]
 }
 
 export default Vue.extend({
@@ -111,9 +113,21 @@ export default Vue.extend({
         needMentor: true,
         registrationType: 0,
         limit: 0,
-        img: '',
+        img: {
+          name: '',
+          original: {
+            url: '',
+            width: 0
+          },
+          width: 0,
+          height: 0,
+          srcset: [],
+          base64: '',
+        },
+        state: 0,
+        enrolling: false,
         describe: '',
-        user:{
+        user: {
           id: 0,
           name: '',
         }
@@ -139,6 +153,9 @@ export default Vue.extend({
       titleRule: [
         v => v.length <= this.$store.state.maxTitleLength || `标题不能超过${this.$store.state.maxTitleLength}个字符`,
         v => v.trim().length > 0 || '标题不能为空'
+      ],
+      limitRule: [
+        v => /\d+/.test(v) || '人数限制必须为数字'
       ]
     }
   },
@@ -152,7 +169,7 @@ export default Vue.extend({
       if (this.uploadImageBase64) {
         return this.uploadImageBase64
       }
-      if (this.content.img && typeof this.content.img !== 'string') {
+      if (this.content.img) {
         return this.content.img.original.url
       }
       return '/upload.svg'
@@ -224,15 +241,20 @@ export default Vue.extend({
       }
 
       try {
-        const content = {
-          ...this.content,
-          typeId: this.typeId
+        const content: CommunityRequestBody = {
+          typeId: this.typeId,
+          title: this.content.title,
+          describe: this.content.describe,
+          detail: this.content.detail,
+          img: this.content.img.name,
+          limit: this.content.limit,
+          state: this.content.state,
+          enrolling: this.content.enrolling,
+          needMentor: this.content.needMentor,
+          registrationType: this.typeId,
         }
-        if (content.img && typeof content.img !== 'string') {
-          content.img = content.img.name
-        }
-        if (content.id) {
-          await this.$axios.put(`/api/community/${content.id}`, content)
+        if (this.content.id) {
+          await this.$axios.put(`/api/community/${this.content.id}`, content)
         } else {
           const { data } = await this.$axios.post('/api/community', content)
           this.content.id = data.data.id

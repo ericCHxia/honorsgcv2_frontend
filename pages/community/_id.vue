@@ -2,18 +2,11 @@
   <v-row>
     <v-col cols="12" md="8">
       <v-card>
-        <v-img
-          :lazy-src="community.img.base64"
-          :src="community.img.original.url"
-          :srcset="getSrcSet(community.img)"
-          max-height="500"
-        >
+        <v-img :lazy-src="community.img.base64" :src="community.img.original.url" :srcset="getSrcSet(community.img)"
+          max-height="500">
         </v-img>
         <v-card-title class="headline" v-text="community.title"></v-card-title>
-        <div
-          class="markdown-view github-markdown-body px-4 pt-0 pb-2"
-          v-html="$md.render(community.detail)"
-        ></div>
+        <div class="markdown-view github-markdown-body px-4 pt-0 pb-2" v-html="$md.render(community.detail)"></div>
       </v-card>
     </v-col>
 
@@ -25,32 +18,22 @@
           <p>
             指导者：
             <template v-for="participant in community.mentors">
-              <a
-                v-if="participant.valid"
-                :key="participant.id"
-                class="participant"
-                href="javascript:;"
-                @click="userInfo(participant)"
-                >{{ participant.name }}
+              <a v-if="participant.valid" :key="participant.id" class="participant" href="javascript:;"
+                @click="userInfo(participant)">{{ participant.name }}
               </a>
             </template>
           </p>
           <p>
             参与者：
             <template v-for="participant in community.participants">
-              <a
-                v-if="participant.valid"
-                :key="participant.id"
-                class="participant"
-                href="javascript:;"
-                @click="userInfo(participant)"
-                >{{ participant.name }}
+              <a v-if="participant.valid" :key="participant.id" class="participant" href="javascript:;"
+                @click="userInfo(participant)">{{ participant.name }}
               </a>
             </template>
           </p>
           <p>
             人数限制：{{ countValidParticipants }}/{{
-              community.limit > 0 ? community.limit : '无限制'
+            community.limit > 0 ? community.limit : '无限制'
             }}
           </p>
           <p>创建时间：{{ community.createDate | formatDate }}</p>
@@ -67,73 +50,38 @@
           <p>
             共同体状态：
             <v-chip v-if="community.state === 1" color="success" dark>
-              可见</v-chip
-            >
+              可见</v-chip>
             <v-chip v-else-if="community.state === 0" color="grey" dark>
-              待通过</v-chip
-            >
+              待通过</v-chip>
             <v-chip v-else color="orange" dark>隐藏</v-chip>
           </p>
         </v-card-text>
         <v-card-actions class="justify-end">
-          <v-btn v-if="!isParticipant" @click="joinIn(1, false)"
-            >我要指导</v-btn
-          >
-          <v-btn v-if="!isParticipant" @click="joinIn(0, false)"
-            >我要参与</v-btn
-          >
+          <v-btn v-if="!isParticipant" @click="joinIn(1, false)">我要指导</v-btn>
+          <v-btn v-if="!isParticipant" @click="joinIn(0, false)">我要参与</v-btn>
           <v-btn v-if="isMentor" @click="joinIn(1, true)">取消指导</v-btn>
-          <v-btn v-if="isParticipant && !isMentor" @click="joinIn(0, true)"
-            >取消参与</v-btn
-          >
-          <v-btn
-            v-if="
-              isParticipant ||
-              $auth.user.privilege > 0 ||
-              $auth.user.id === community.user.id
-            "
-            @click="recordDialog = true"
-            >打卡
+          <v-btn v-if="isParticipant && !isMentor" @click="joinIn(0, true)">取消参与</v-btn>
+          <v-btn v-if="
+            isParticipant ||
+            $auth.user.privilege > 0 ||
+            $auth.user.id === community.user.id
+          " @click="recordDialog = true">打卡
           </v-btn>
         </v-card-actions>
       </v-card>
-      <v-card
-        v-if="$auth.user.privilege > 0 || $auth.user.id === community.user.id"
-      >
+      <v-card v-if="$auth.user.privilege > 0 || $auth.user.id === community.user.id">
         <v-card-title>管理</v-card-title>
         <v-card-actions>
           <v-card class="d-flex align-content-start flex-wrap" flat>
-            <v-btn class="ma-1" @click.stop="managerParticipantDialog = true"
-              >人员</v-btn
-            >
-            <v-btn class="ma-1" :to="`/community/edit/${community.id}`"
-              >编辑</v-btn
-            >
-            <v-btn
-              v-if="!community.enrolling"
-              class="ma-1"
-              @click="changeEnrolling(true)"
-              >开启报名</v-btn
-            >
-            <v-btn
-              v-if="community.enrolling"
-              class="ma-1"
-              @click="changeEnrolling(false)"
-              >关闭报名</v-btn
-            >
+            <v-btn class="ma-1" @click.stop="managerParticipantDialog = true">人员</v-btn>
+            <v-btn class="ma-1" :to="`/community/edit/${community.id}`">编辑</v-btn>
+            <v-btn v-if="!community.enrolling" class="ma-1" @click="changeEnrolling(true)">开启报名</v-btn>
+            <v-btn v-if="community.enrolling" class="ma-1" @click="changeEnrolling(false)">关闭报名</v-btn>
             <template v-if="isAdmin()">
-              <v-btn
-                v-if="community.state === 1"
-                class="ma-1"
-                @click="changeState(2)"
-              >
+              <v-btn v-if="community.state === 1" class="ma-1" @click="changeState(2)">
                 隐藏
               </v-btn>
-              <v-btn
-                v-else-if="community.state === 0"
-                class="ma-1"
-                @click="changeState(1)"
-              >
+              <v-btn v-else-if="community.state === 0" class="ma-1" @click="changeState(1)">
                 通过审批
               </v-btn>
               <v-btn v-else class="ma-1" @click="changeState(1)">可见</v-btn>
@@ -171,14 +119,8 @@
             <v-card-text class="body-1 justify-start">
               <v-row class="justify-start">
                 <v-col cols="3">
-                  <v-img
-                    :src="item.image.original.url"
-                    max-height="200"
-                    contain
-                    :srcset="getSrcSet(item.image)"
-                    :lazy-src="item.image.base64"
-                    @click="selectImage(item.image)"
-                  ></v-img>
+                  <v-img :src="item.image.original.url" max-height="200" contain :srcset="getSrcSet(item.image)"
+                    :lazy-src="item.image.base64" @click="selectImage(item.image)"></v-img>
                 </v-col>
                 <v-col cols="9">
                   {{ item.detail }}
@@ -192,11 +134,7 @@
 
     <v-col cols="auto">
       <!-- 用户信息 -->
-      <v-dialog
-        v-model="dialog"
-        transition="dialog-top-transition"
-        max-width="600"
-      >
+      <v-dialog v-model="dialog" transition="dialog-top-transition" max-width="600">
         <v-card>
           <v-toolbar color="primary" dark>用户信息</v-toolbar>
           <v-card-text>
@@ -269,11 +207,7 @@
       </v-dialog>
 
       <!-- 删除确认 -->
-      <v-dialog
-        v-model="participantDialog"
-        transition="dialog-top-transition"
-        max-width="600"
-      >
+      <v-dialog v-model="participantDialog" transition="dialog-top-transition" max-width="600">
         <v-card>
           <v-toolbar>确认删除</v-toolbar>
           <v-card-text class="mt-3">
@@ -282,42 +216,26 @@
             <em class="warning--text">{{ selectedUser.name }}</em> 吗？
           </v-card-text>
           <v-card-actions class="justify-end">
-            <v-btn text color="primary" @click="participantDialog = false"
-              >关闭
+            <v-btn text color="primary" @click="participantDialog = false">关闭
             </v-btn>
             <v-btn color="primary" @click="deleteParticipant([selectedUser])">
-              确定</v-btn
-            >
+              确定</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
       <!-- 共同体人员管理 -->
       <v-dialog v-model="managerParticipantDialog" max-width="800">
-        <v-data-table
-          v-model="selectedUsers"
-          :headers="managerParticipantHeaders"
-          :items="participants"
-          :search="participantSearch"
-          :items-per-page="5"
-          fixed-header
-          :footer-props="{
+        <v-data-table v-model="selectedUsers" :headers="managerParticipantHeaders" :items="participants"
+          :search="participantSearch" :items-per-page="5" fixed-header :footer-props="{
             'items-per-page-all-text': '全部',
             'items-per-page-text': '条/页'
-          }"
-          show-select
-        >
+          }" show-select>
           <template #top>
             <v-toolbar flat>
               <v-toolbar-title>参与者管理</v-toolbar-title>
-              <v-text-field
-                v-model="participantSearch"
-                append-icon="mdi-magnify"
-                label="搜索"
-                single-line
-                hide-details
-                class="mx-4"
-              ></v-text-field>
+              <v-text-field v-model="participantSearch" append-icon="mdi-magnify" label="搜索" single-line hide-details
+                class="mx-4"></v-text-field>
               <v-menu open-on-hover offset-x>
                 <template #activator="{ on, attrs }">
                   <v-btn color="primary" dark v-bind="attrs" v-on="on">
@@ -336,13 +254,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-btn
-                text
-                icon
-                color="red"
-                class="ml-2"
-                @click="managerParticipantDialog = false"
-              >
+              <v-btn text icon color="red" class="ml-2" @click="managerParticipantDialog = false">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-toolbar>
@@ -377,9 +289,7 @@
             </v-alert>
           </template>
 
-          <template
-            #[`footer.page-text`]="{ pageStart, pageStop, itemsLength }"
-          >
+          <template #[`footer.page-text`]="{ pageStart, pageStop, itemsLength }">
             {{ pageStart }} - {{ pageStop }} 共 {{ itemsLength }}
           </template>
         </v-data-table>
@@ -400,43 +310,18 @@
             <v-row>
               <v-col cols="4">
                 <v-hover v-slot="{ hover }">
-                  <v-card
-                    class="my-4 rounded-lg"
-                    :elevation="hover ? 12 : 2"
-                    @click="beginUpload"
-                  >
-                    <v-img
-                      aspect-ratio="1"
-                      class="align-center"
-                      :src="cover"
-                      contain
-                    >
+                  <v-card class="my-4 rounded-lg" :elevation="hover ? 12 : 2" @click="beginUpload">
+                    <v-img aspect-ratio="1" class="align-center" :src="cover" contain>
                     </v-img>
                   </v-card>
                 </v-hover>
               </v-col>
               <v-col cols="8">
-                <v-select
-                  v-model="recordSelectedUserId"
-                  :items="validParticipants"
-                  item-text="name"
-                  item-value="id"
-                  label="参与人员"
-                  clearable
-                  multiple
-                  chips
-                  outlined
-                  prepend-icon="mdi-account-multiple"
-                >
+                <v-select v-model="recordSelectedUserId" :items="validParticipants" item-text="name" item-value="id"
+                  label="参与人员" clearable multiple chips outlined prepend-icon="mdi-account-multiple">
                   <template #selection="{ attrs, item, parent, selected }">
-                    <v-chip
-                      v-if="item === Object(item)"
-                      v-bind="attrs"
-                      :color="`primary`"
-                      :input-value="selected"
-                      small
-                      dark
-                    >
+                    <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`primary`" :input-value="selected" small
+                      dark>
                       <span class="pr-2">
                         {{ item.name }}
                       </span>
@@ -448,11 +333,9 @@
                   <template #prepend-item>
                     <v-list-item ripple @mousedown.prevent @click="toggle">
                       <v-list-item-action>
-                        <v-icon
-                          :color="
-                            recordSelectedUserId.length > 0 ? 'indigo' : ''
-                          "
-                        >
+                        <v-icon :color="
+                          recordSelectedUserId.length > 0 ? 'indigo' : ''
+                        ">
                           {{ icon }}
                         </v-icon>
                       </v-list-item-action>
@@ -463,14 +346,8 @@
                     <v-divider class="mt-2"></v-divider>
                   </template>
                 </v-select>
-                <v-textarea
-                  v-model="recordContent"
-                  label="打卡内容"
-                  :counter="true"
-                  rows="3"
-                  outlined
-                  :rules="[(v) => !!v || '请输入打卡内容']"
-                ></v-textarea>
+                <v-textarea v-model="recordContent" label="打卡内容" :counter="true" rows="3" outlined
+                  :rules="[(v) => !!v || '请输入打卡内容']"></v-textarea>
               </v-col>
             </v-row>
           </v-card-text>
@@ -478,25 +355,15 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" text @click="recordDialog = false">
-              取消</v-btn
-            >
+              取消</v-btn>
             <v-btn color="primary" @click="submitComment">提交</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
-      <v-dialog
-        v-if="selectedImage"
-        v-model="imageDialog"
-        content-class="image-dialog"
-      >
-        <v-img
-          :src="selectedImage.original.url"
-          :srcset="getSrcSet(selectedImage)"
-          class="scale-image"
-          :lazy-src="selectedImage.base64"
-          @click="imageDialog = false"
-        ></v-img>
+      <v-dialog v-if="selectedImage" v-model="imageDialog" content-class="image-dialog">
+        <v-img :src="selectedImage.original.url" :srcset="getSrcSet(selectedImage)" class="scale-image"
+          :lazy-src="selectedImage.base64" @click="imageDialog = false"></v-img>
       </v-dialog>
     </v-col>
   </v-row>
@@ -660,9 +527,21 @@ export default Vue.extend({
           id: 0,
           name: ''
         },
-        img: '',
+        img: {
+          name: '',
+          original: {
+            url: '',
+            width: 0
+          },
+          width: 0,
+          height: 0,
+          srcset: [],
+          base64: '',
+        },
+        state: 0,
+        enrolling: false,
         needMentor: false,
-        registrationType:0,
+        registrationType: 0,
         user: {
           id: 0,
           name: '',
@@ -694,7 +573,7 @@ export default Vue.extend({
   methods: {
     userInfo(participant: CommunityParticipant) {
       const user = this.$auth.user as unknown as User
-      if(user.privilege > 0 || user.id === this.community.user.id) {
+      if (user.privilege > 0 || user.id === this.community.user.id) {
         this.selectedUser = participant
         this.dialog = true
       }
@@ -710,7 +589,7 @@ export default Vue.extend({
         else this.$toast.error('删除失败')
       }
     },
-    managerParticipant() {},
+    managerParticipant() { },
     uploadImage(file: File) {
       if (file) {
         this.recordImage = file

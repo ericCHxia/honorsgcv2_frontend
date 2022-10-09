@@ -88,14 +88,27 @@ export type Community = {
   createDate?: string | null
   user: UserSimple
   type: CommunityType | null
-  img: ImageResponse | string
-  limit: number | null
-  state?: number | null
-  enrolling?: boolean | null
+  img: ImageResponse
+  limit: number
+  state: number
+  enrolling: boolean
   needMentor: boolean
   registrationType: number
   participants?: CommunityParticipant[]
   mentors?: CommunityParticipant[]
+}
+
+export type CommunityRequestBody = {
+  typeId: number
+  title: string
+  describe: string
+  detail: string
+  img: string
+  limit: number
+  state: number
+  enrolling: boolean
+  needMentor: boolean
+  registrationType: number
 }
 
 export class User {
