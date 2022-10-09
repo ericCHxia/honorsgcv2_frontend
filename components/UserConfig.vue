@@ -190,7 +190,7 @@ export default Vue.extend({
     },
     avatar(): string {
       if (this.inputuser.avatar.trim().length > 0) {
-        return `/image/50/${this.inputuser.avatar}`
+        return `/image/200/${this.inputuser.avatar}`
       } else {
         const data = identicon(String(this.inputuser.id))
         const out = 'data:image/svg+xml;utf8,' + encodeURIComponent(data);
