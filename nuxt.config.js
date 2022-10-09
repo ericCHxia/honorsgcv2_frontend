@@ -189,16 +189,16 @@ export default {
 
   proxy: {
     '/api': {
-      target: process.env.NODE_ENV === 'production' ? 'https://back.hduhonorsgc.cn' : 'http://localhost:8080',
+      target: process.env.BACKEND_URL? process.env.BACKEND_URL : 'http://localhost:8080',
       pathRewrite: {
         '^/api': ''
       }
     },
     '/upload': {
-      target: process.env.NODE_ENV === 'production' ? 'https://back.hduhonorsgc.cn' : 'http://localhost:8080',
+      target: process.env.BACKEND_URL? process.env.BACKEND_URL : 'http://localhost:8080',
     },
     '/image': {
-      target: process.env.NODE_ENV === 'production' ? 'https://back.hduhonorsgc.cn' : 'http://localhost:8080',
+      target: process.env.BACKEND_URL? process.env.BACKEND_URL : 'http://localhost:8080',
     },
   },
 
