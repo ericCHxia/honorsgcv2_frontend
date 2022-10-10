@@ -109,7 +109,10 @@ export default Vue.extend({
       content: {
         title: '',
         detail: '',
-        type: null,
+        type: {
+          id: 0,
+          name: ''
+        },
         needMentor: true,
         registrationType: 0,
         limit: 0,
