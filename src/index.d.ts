@@ -87,7 +87,7 @@ export type Community = {
   describe: string
   createDate?: string | null
   user: UserSimple
-  type: CommunityType | null
+  type: CommunityType
   img: ImageResponse
   limit: number
   state: number

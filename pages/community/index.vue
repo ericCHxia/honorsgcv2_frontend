@@ -4,7 +4,7 @@
       <!-- 搜索框 -->
       <v-row class="mb-0" justify="end">
         <v-col>
-          <v-text-field v-model="searchText" placeholder="搜索" prepend-inner-icon="mdi-magnify" hide-details outlined
+          <v-text-field v-model="searchText"  class="searchtext" placeholder="搜索" prepend-inner-icon="mdi-magnify" hide-details outlined
             rounded clearable>
             <template #append>
               <v-menu v-model="filtermenu" :close-on-content-click="false" :nudge-width="500" offset-x>
@@ -241,7 +241,7 @@ export default class extends Vue {
     this.page = 0
     this.communities = []
     this.$axios.get('/api/community', {
-      params:this.requestParam
+      params: this.requestParam
     }).then(({ data }) => {
       const page: Page<Community> = data.data
       this.communities = page.content
@@ -261,7 +261,7 @@ export default class extends Vue {
     }
     this.page++
     this.$axios.get('/api/community', {
-      params:this.requestParam
+      params: this.requestParam
     }).then(({ data }) => {
       const page: Page<Community> = data.data
       if (page.last) {
@@ -302,5 +302,27 @@ export default class extends Vue {
 <style scoped>
 .community-title {
   display: block;
+}
+</style>
+
+<style>
+.searchtext>.v-input__control>.v-input__slot {
+  padding: 0 12px !important;
+}
+.searchtext .v-input__append-inner {
+  margin-top: 11px !important;
+}
+</style>
+
+
+<style lang="scss" scoped>
+.filterico {
+  border-radius: 25px;
+  width: 60px;
+  height: 34px;
+}
+
+.filterico:hover {
+  background-color: #f5f5f5;
 }
 </style>
