@@ -254,7 +254,7 @@ export default Vue.extend({
           state: this.content.state,
           enrolling: this.content.enrolling,
           needMentor: this.content.needMentor,
-          registrationType: this.typeId,
+          registrationType: this.content.registrationType,
         }
         if (this.content.id) {
           await this.$axios.put(`/api/community/${this.content.id}`, content)
