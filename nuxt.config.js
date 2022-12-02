@@ -35,11 +35,6 @@ export default {
       type: 'text/css',
       href: 'https://cdn.staticfile.org/MaterialDesign-Webfont/6.5.95/css/materialdesignicons.min.css'
     },
-    {
-      rel: 'stylesheet',
-      type: 'text/css',
-      href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'
-    }
     ]
   },
 
@@ -55,6 +50,7 @@ export default {
     '~/plugins/md-plugin',
     '~/plugins/user-plugin',
     '~/plugins/components',
+    '~/plugins/fonts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
