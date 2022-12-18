@@ -43,6 +43,7 @@ export type CommunityType = {
 export type UserSimple = {
   id: number
   name: string
+  avatar: string
 }
 
 export type GlobalResponse<T> = {

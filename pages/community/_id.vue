@@ -108,7 +108,7 @@
                     </v-btn>
                   </template>
 
-                  <v-list v-if="isAdmin() || item.user.id == $auth.user.id">
+                  <v-list v-if="isAdmin() || $auth.user && item.user.id == $auth.user.id">
                     <v-list-item @click="deleteRecord(item)">
                       <v-list-item-title>删除</v-list-item-title>
                     </v-list-item>
@@ -117,6 +117,14 @@
               </template>
             </honor-user-bar>
             <v-card-text class="body-1 justify-start">
+              <v-row class="justify-start">
+                <v-col v-for="attend in item.attendant" :key="`attend${attend.id}`" cols="auto" class="py-1 px-1">
+                  <chip-avatar :user="attend"></chip-avatar>
+                </v-col>
+                <v-col cols="auto" class="py-1 px-1">
+                  (共{{ item.attendant.length }}人)
+                </v-col>
+              </v-row>
               <v-row class="justify-start">
                 <v-col cols="3">
                   <v-img :src="item.image.original.url" max-height="200" contain :srcset="getSrcSet(item.image)"
@@ -545,6 +553,7 @@ export default Vue.extend({
         user: {
           id: 0,
           name: '',
+          avatar: ''
         }
       },
       countValidParticipants: 0

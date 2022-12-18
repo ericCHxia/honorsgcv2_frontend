@@ -133,6 +133,7 @@ export default Vue.extend({
         user: {
           id: 0,
           name: '',
+          avatar: ''
         }
       },
       typeId: null,
