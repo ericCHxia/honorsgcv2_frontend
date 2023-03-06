@@ -49,27 +49,17 @@ export default Vue.extend({
     return {
       config: {},
       semesters: [
-        {
-          text: '2022-2023 第一学期',
-          value: 6,
-        },
-        {
-          text: '2021-2022 第二学期',
-          value: 5,
-        },
-        {
-          text: '2021-2022 第一学期',
-          value: 4,
-        },
-        {
-          text: '2020-2021 第二学期',
-          value: 3,
-        },
       ],
       oldConfig: {},
     }
   },
   mounted() {
+    for(let i=3;i<=60;i++){
+      this.semesters.push({
+        text: `${2019+Math.floor((i-1)/2)}-${2020+Math.floor((i-1)/2)} 第${i%2===0?'二':'一'}学期`,
+        value: i,
+      })
+    }
     this.oldConfig = JSON.parse(JSON.stringify(this.config))
   },
   methods: {
