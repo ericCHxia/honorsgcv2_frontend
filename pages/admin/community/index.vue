@@ -90,6 +90,16 @@ import { Community, CommunityType, Page } from '~/src'
       search: searchText,
       admin: true,
     }
+    const semesters = [{
+      text: '全部',
+      value: -1,
+    }]
+    for (let i = 3; i <= 60; i++) {
+      semesters.push({
+        text: `${2019 + Math.floor(i/ 2)}-${2020 + Math.floor(i/ 2)} 第${i % 2 === 0 ? '一' : '二'}学期`,
+        value: i,
+      })
+    }
     const communities: Page<Community> = await $axios.get('/api/community', {
       params: {
         page_size: pageSize,
@@ -105,6 +115,7 @@ import { Community, CommunityType, Page } from '~/src'
       searchText,
       semester,
       communityParam,
+      semesters,
     }
   },
 })
